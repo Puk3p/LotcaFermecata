@@ -1,0 +1,25 @@
+<div class="content" *ngIf="order">
+  <h2>Order Details</h2>
+
+  <p><strong>ID:</strong> {{ order.id }}</p>
+  <p><strong>Client:</strong> {{ order.clientName }} ({{ order.clientPhone }})</p>
+  <p><strong>Zone:</strong> {{ order.targetZone }}</p>
+  <p><strong>Placed At:</strong> {{ order.placedAt | date:'short' }}</p>
+
+  <p><strong>Status:</strong>
+    <select [(ngModel)]="newStatus">
+      <option value="Pending">Pending</option>
+      <option value="Preparing">Preparing</option>
+      <option value="Served">Served</option>
+    </select>
+    <button (click)="updateStatus()">Update</button>
+  </p>
+
+  <hr />
+  <h3>Items:</h3>
+  <ul>
+    <li *ngFor="let item of order.items">
+      {{ item.productName }} – x{{ item.quantity }}
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,164 @@
+.order-form-container {
+  padding: 2rem;
+  max-width: 700px;
+  margin: 40px auto;
+  background: #E5E4E2;
+  border-radius: 1rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+h2, h3 {
+  color: #4B0082;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #4B0082;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #4B0082;
+  border-radius: 8px;
+  outline: none;
+  background: white;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0 25px;
+  flex-wrap: wrap;
+}
+
+.category-tabs button {
+  padding: 8px 14px;
+  background-color: #ccc;
+  color: #4B0082;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+}
+
+.category-tabs button.active {
+  background-color: #4B0082;
+  color: white;
+}
+
+.menu-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.menu-item {
+  background: white;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 15px;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.menu-item button {
+  margin-top: 8px;
+  background-color: #4B0082;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.menu-item button:hover {
+  background-color: #360060;
+}
+
+.cart-section {
+  margin-top: 30px;
+}
+
+.cart-section h3 {
+  margin-bottom: 10px;
+}
+
+.cart-section ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-section li {
+  margin-bottom: 10px;
+  padding: 8px;
+  background: #fff;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+}
+
+.remove-btn {
+  background: transparent;
+  border: none;
+  color: crimson;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.remove-btn:hover {
+  color: darkred;
+}
+
+.total-price {
+  margin-top: 15px;
+  font-size: 18px;
+  text-align: right;
+  color: #4B0082;
+  font-weight: bold;
+}
+
+.submit-button {
+  background: #4B0082;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s;
+}
+
+.submit-button:hover {
+  background: #360060;
+}

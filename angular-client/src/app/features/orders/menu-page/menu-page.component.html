@@ -1,0 +1,30 @@
+<div class="menu-container">
+  <h2><i class="fas fa-utensils"></i> Select from Menu</h2>
+
+  <div class="category-tabs">
+    <button
+      *ngFor="let cat of menu"
+      (click)="changeCategory(cat.category)"
+      [class.active]="selectedCategory === cat.category"
+    >
+      {{ cat.category }}
+    </button>
+  </div>
+
+  <div class="menu-items">
+    <div *ngFor="let item of currentCategoryItems" class="menu-item">
+      <span><i class="fas fa-plus-circle"></i> {{ item.name }} - {{ item.price }} lei</span>
+      <button (click)="addToCart(item)">Add</button>
+    </div>
+  </div>
+
+  <div class="cart-section" *ngIf="cart.length > 0">
+    <h3><i class="fas fa-shopping-cart"></i> Cart</h3>
+    <ul>
+      <li *ngFor="let item of cart">
+        {{ item.name }} (x{{ item.quantity }}) - {{ item.price * item.quantity }} lei
+        <button (click)="removeItem(item.name)">Remove</button>
+      </li>
+    </ul>
+  </div>
+</div>

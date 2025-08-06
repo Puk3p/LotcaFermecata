@@ -1,0 +1,64 @@
+<div class="order-form-container">
+  <h2><i class="fas fa-utensils"></i> Create Order</h2>
+
+  <form (ngSubmit)="createOrder()" class="order-form">
+    <!-- INFO CLIENT -->
+    <div class="form-group">
+      <label><i class="fas fa-user"></i> Client Name:</label>
+      <input type="text" [(ngModel)]="clientName" name="clientName" required />
+    </div>
+
+    <div class="form-group">
+      <label><i class="fas fa-phone"></i> Client Phone:</label>
+      <input type="text" [(ngModel)]="clientPhone" name="clientPhone" required />
+    </div>
+
+    <hr />
+
+    <!-- CATEGORII MENIU -->
+    <h3><i class="fas fa-list"></i> Categories</h3>
+    <div class="category-tabs">
+      <button
+        *ngFor="let cat of menu"
+        (click)="changeCategory(cat.category)"
+        [class.active]="selectedCategory === cat.category"
+        type="button"
+      >
+        {{ cat.category }}
+      </button>
+    </div>
+
+    <!-- PRODUSE DIN CATEGORIE -->
+    <div class="menu-items" *ngIf="currentCategory">
+      <h3><i class="fas fa-hamburger"></i> {{ currentCategory.category }}</h3>
+      <div *ngFor="let item of currentCategory.items" class="menu-item">
+        <span>{{ item.name }} - {{ item.price }} lei</span>
+        <button type="button" (click)="addToCart(item)">Add</button>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- COȘ -->
+    <div class="cart-section">
+      <h3><i class="fas fa-shopping-cart"></i> Cart</h3>
+      <ul>
+        <li *ngFor="let item of cart">
+          {{ item.name }} (x{{ item.quantity }}) — <strong>{{ item.price * item.quantity }} lei</strong>
+          <button type="button" class="remove-btn" (click)="removeFromCart(item.name)">
+            <i class="fas fa-times"></i>
+          </button>
+        </li>
+      </ul>
+
+      <!-- TOTAL -->
+      <div *ngIf="cart.length > 0" class="total-price">
+        Total: <strong>{{ getTotal() }} lei</strong>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-button">
+      <i class="fas fa-paper-plane"></i> Submit Order
+    </button>
+  </form>
+</div>
