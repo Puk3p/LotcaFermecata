@@ -9,6 +9,9 @@ namespace SP25.Business.ModelMapping
         public MappingProfile()
         {
             CreateMap<TestModel, TestModelDto>().ReverseMap();
+            CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<OrderItem, OrderItemDto>().ReverseMap();
+
         }
     }
 }

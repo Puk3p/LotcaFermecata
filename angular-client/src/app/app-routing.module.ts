@@ -1,10 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LandingPageComponent } from './core/landing-page/landing-page.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { MainLayoutComponent } from './shared/layout/main-layout/main-layout.component';
 
 const routes: Routes = [
-  { path: '', component: LandingPageComponent }
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./core/landing-page/landing-page.component').then(m => m.LandingPageComponent)
+      }
+    ]
+  },
+  {
+    path: 'auth/login',
+    loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path: 'auth/register',
+    loadComponent: () => import('./auth/register/register.component').then(m => m.RegisterComponent)
+  }
 ];
+
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

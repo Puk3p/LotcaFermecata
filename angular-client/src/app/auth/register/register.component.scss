@@ -1,0 +1,80 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 1rem;
+  background-color: #4B0082; // Velvet Indigo
+  color: #E5E4E2; // Platinum Frost
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.login-form {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(75, 0, 130, 0.4);
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.login-form input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.login-form input:focus {
+  border-color: #4B0082;
+  outline: none;
+  box-shadow: 0 0 5px #4B0082;
+}
+
+.login-form button {
+  padding: 0.75rem;
+  background-color: #4B0082;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login-form button:hover {
+  background-color: #360065;
+}
+
+.login-form a {
+  text-align: center;
+  color: #4B0082;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.login-form a:hover {
+  color: #2d0051;
+}
+
+/* ✅ Responsive pentru mobile */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1rem;
+  }
+
+  .login-form {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+
+  .login-form input,
+  .login-form button {
+    font-size: 0.95rem;
+    padding: 0.6rem;
+  }
+}

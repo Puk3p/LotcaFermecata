@@ -1,0 +1,31 @@
+﻿### Creare comandă nouă (doar user logat)
+
+POST https://localhost:7227/api/order
+Accept: */*
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjN2MwMDdjNi01Y2YzLTQ1YzMtYWNiOS05NGE5MjZmYWIyZWYiLCJlbWFpbCI6IlB1azNwIiwianRpIjoiNzMxNWQzMzgtY2NjZS00ZjNlLWE1YzItMzkzNWMwZTEwNDkzIiwiaWF0IjoxNzU0NDE3Nzc5LCJuYmYiOjE3NTQ0MTc3NzksImV4cCI6MTc1NDQzOTM3OSwiaXNzIjoiQ2VudHJpYyIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjcyMjcvIn0.zY2lqRUi_2yoCbOR1pVbS1ceB8adFBk6xhrLuFk0ZPc
+
+{
+  "clientName": "Andrei",
+  "clientPhone": "0722333444",
+  "targetZone": "Kitchen",
+  "items": [
+    { "productName": "Bere", "quantity": 2 },
+    { "productName": "Cola", "quantity": 1 }
+  ]
+}
+
+
+
+
+### Obține comenzi pentru o zonă
+
+GET https://localhost:7227/api/order/Kitchen
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjN2MwMDdjNi01Y2YzLTQ1YzMtYWNiOS05NGE5MjZmYWIyZWYiLCJlbWFpbCI6IlB1azNwIiwianRpIjoiZGIyZTY2MDktZWVkNC00NGZiLTgyNWItNDU2M2JjNDc2NGI2IiwiaWF0IjoxNzU0NDE3MzQ0LCJuYmYiOjE3NTQ0MTczNDQsImV4cCI6MTc1NDQzODk0NCwiaXNzIjoiQ2VudHJpYyIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjcyMjc2LyJ9.LXPGBouIdU8ilrjcbOk6Z3NG9Q-ypUqJngEXi-uOUPI
+
+
+### Test ping fără JWT
+
+GET https://localhost:7227/api/order/ping
+Accept: text/plain

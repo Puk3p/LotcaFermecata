@@ -5,9 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-import { AuthModule } from './auth/auth.module';
 import { MatButtonModule } from '@angular/material/button';
 import { FeaturesModule } from './features/features.module';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -18,10 +19,10 @@ import { FeaturesModule } from './features/features.module';
     AppRoutingModule,
     CoreModule,
     SharedModule,
-    AuthModule,
     FeaturesModule,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,11 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+* {
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden !important; /* << ELIMINĂ SCROLLBAR ORIZONTAL */
+  font-family: 'Segoe UI', sans-serif;
+  box-sizing: border-box;
+}
+
 
 .spacer {
   flex: 1 1 auto;
-}
-
-body{
-    margin: 0px;
 }

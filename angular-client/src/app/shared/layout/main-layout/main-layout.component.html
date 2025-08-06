@@ -1,0 +1,73 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- SIDEBAR -->
+  <mat-sidenav
+    #drawer
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)"
+    class="sidenav"
+  >
+    <div class="sidebar-header">
+      <img src="assets/logo.png" alt="Logo" class="logo" />
+      <h1 class="brand">Lotca Fermecata</h1>
+    </div>
+
+    <div class="nav-section">
+      <p class="nav-title">Navigation</p>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/" routerLinkActive="active-link">
+          <i class="fas fa-chart-line nav-icon"></i> Dashboard
+        </a>
+      </mat-nav-list>
+    </div>
+
+    <div class="nav-section">
+      <p class="nav-title">Authentication</p>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/auth/login" routerLinkActive="active-link">
+          <i class="fas fa-sign-in-alt nav-icon"></i> Login
+        </a>
+        <a mat-list-item routerLink="/auth/register" routerLinkActive="active-link">
+          <i class="fas fa-user-plus nav-icon"></i> Register
+        </a>
+      </mat-nav-list>
+    </div>
+
+    <div class="nav-section">
+      <p class="nav-title">Extra</p>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/profile" routerLinkActive="active-link">
+          <i class="fas fa-user nav-icon"></i> Profile
+        </a>
+        <a mat-list-item routerLink="/settings" routerLinkActive="active-link">
+          <i class="fas fa-cog nav-icon"></i> Settings
+        </a>
+      </mat-nav-list>
+    </div>
+  </mat-sidenav>
+
+  <!-- CONTENT -->
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="topbar">
+      <!-- Hamburger button for mobile -->
+      <button
+        mat-icon-button
+        (click)="drawer.toggle()"
+        class="hamburger-button"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+
+
+
+      <span class="spacer"></span>
+
+      <button mat-icon-button>
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
