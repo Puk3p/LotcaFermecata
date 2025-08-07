@@ -25,13 +25,22 @@ namespace SP25.Business.Services.Implementations
 
         public async Task<OrderDto> CreateOrderAsync(string userId, CreateOrderDto dto)
         {
+            Console.WriteLine($"[DEBUG] UserID: {userId ?? "ANON"}");
+            Console.WriteLine($"[DEBUG] ClientName: {dto.ClientName}");
+            Console.WriteLine($"[DEBUG] ClientPhone: {dto.ClientPhone}");
+            Console.WriteLine($"[DEBUG] TargetZone: {dto.TargetZone}");
+            Console.WriteLine($"[DEBUG] Items count: {dto.Items?.Count}");
+
             if (!Enum.TryParse<WorkZone>(dto.TargetZone, true, out var targetZone))
-                throw new ArgumentException("Invalid target zone");
+            {
+                Console.WriteLine($"[ERROR] TargetZone invalid: {dto.TargetZone}");
+                throw new ArgumentException($"Invalid target zone: {dto.TargetZone}");
+            }
 
             var order = new Order
             {
                 Id = Guid.NewGuid(),
-                PlacedByUserId = userId,
+                PlacedByUserId = userId ?? "anonymous",
                 ClientName = dto.ClientName,
                 ClientPhone = dto.ClientPhone,
                 TargetZone = targetZone,
@@ -44,11 +53,22 @@ namespace SP25.Business.Services.Implementations
                 }).ToList() ?? new List<OrderItem>()
             };
 
-            _dbContext.Orders.Add(order);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                _dbContext.Orders.Add(order);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[ERROR] Exception during SaveChangesAsync");
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
 
             return _mapper.Map<OrderDto>(order);
         }
+
+
 
 
         public async Task<List<OrderDto>> GetOrdersForZoneAsync(string zone)
@@ -59,7 +79,10 @@ namespace SP25.Business.Services.Implementations
             var orders = await _dbContext.Orders
                 .Where(o => o.TargetZone == targetZone)
                 .Include(o => o.Items)
-                .OrderByDescending(o => o.PlacedAt)
+                .OrderBy(o => o.Status == OrderStatus.Pending ? 0 :
+                              o.Status == OrderStatus.InProgress ? 1 :
+                              o.Status == OrderStatus.Done ? 2 : 3)
+                .ThenBy(o => o.PlacedAt)
                 .ToListAsync();
 
             return _mapper.Map<List<OrderDto>>(orders);
@@ -75,6 +98,46 @@ namespace SP25.Business.Services.Implementations
                 return false;
 
             order.Status = status;
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<OrderDto> GetOrderByIdAsync(Guid orderId)
+        {
+            var order = await _dbContext.Orders
+                .Include(o => o.Items)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+                return null;
+
+            return _mapper.Map<OrderDto>(order);
+        }
+
+        public async Task<bool> UpdateOrderAsync(Guid orderId, UpdateOrderDto dto)
+        {
+            var order = await _dbContext.Orders.Include(o => o.Items)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+                return false;
+
+            order.ClientName = dto.ClientName;
+            order.ClientPhone = dto.ClientPhone;
+
+            if (Enum.TryParse<WorkZone>(dto.TargetZone, true, out var zone))
+                order.TargetZone = zone;
+
+            order.Items.Clear();
+            foreach (var itemDto in dto.Items)
+            {
+                order.Items.Add(new OrderItem
+                {
+                    ProductName = itemDto.ProductName,
+                    Quantity = itemDto.Quantity
+                });
+            }
+
             await _dbContext.SaveChangesAsync();
             return true;
         }

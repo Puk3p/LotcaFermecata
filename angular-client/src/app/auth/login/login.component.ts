@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -17,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 export class LoginComponent {
   username = '';
   password = '';
+  selectedRole: 'BAR' | 'BUCATARIE' = 'BAR'; // default
 
   constructor(private auth: AuthService, private router: Router) {}
 
@@ -24,7 +24,10 @@ export class LoginComponent {
     this.auth.login({ username: this.username, password: this.password }).subscribe({
       next: (res) => {
         this.auth.saveToken(res.token);
-        this.router.navigate(['/']);
+        localStorage.setItem('role', this.selectedRole);
+        localStorage.setItem('userId', this.username); // salvăm username-ul introdus
+
+        this.router.navigate(['/orders']);
       },
       error: () => alert('Login greșit!')
     });

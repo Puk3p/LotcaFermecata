@@ -12,8 +12,8 @@ using SP25.Domain.Context;
 namespace SP25.Domain.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20250805180716_Orders")]
-    partial class Orders
+    [Migration("20250806213204_Lover")]
+    partial class Lover
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

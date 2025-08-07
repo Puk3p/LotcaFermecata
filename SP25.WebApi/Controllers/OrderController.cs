@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SP25.WebApi.Controllers
 {
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
@@ -26,12 +27,10 @@ namespace SP25.WebApi.Controllers
             return Ok("pong");
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto dto)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+            var userId = dto.PlacedByUserId ?? "anonymous";
             try
             {
                 var order = await _orderService.CreateOrderAsync(userId, dto);
@@ -44,7 +43,7 @@ namespace SP25.WebApi.Controllers
         }
 
 
-        [HttpGet("{zone}")]
+        [HttpGet("zone/{zone}")]
         public async Task<IActionResult> GetOrdersForZone(string zone)
         {
             try
@@ -58,14 +57,50 @@ namespace SP25.WebApi.Controllers
             }
         }
 
-        [HttpPatch("{orderId}/status")]
-        public async Task<IActionResult> UpdateOrderStatus(Guid orderId, [FromBody] string newStatus)
+        [HttpPatch("update-status")]
+        public async Task<IActionResult> UpdateOrderStatus([FromBody] UpdateOrderStatusDto dto)
         {
-            var success = await _orderService.UpdateOrderStatusAsync(orderId, newStatus);
-            if (!success)
-                return NotFound("Order or status not found");
+            Console.WriteLine($"Received OrderId: {dto.OrderId}, NewStatus: {dto.NewStatus}");
 
-            return Ok("Status updated!");
+            var success = await _orderService.UpdateOrderStatusAsync(dto.OrderId, dto.NewStatus);
+
+            if (!success)
+            {
+                Console.WriteLine("FAILED to update: order not found or status invalid.");
+                return NotFound("Order or status not found");
+            }
+
+            return Ok(new { success = true });
+        }
+
+
+
+
+        [HttpGet("{orderId}")]
+        public async Task<IActionResult> GetOrderById(Guid orderId)
+        {
+            try
+            {
+                var order = await _orderService.GetOrderByIdAsync(orderId);
+                if (order == null)
+                    return NotFound("Order not found");
+
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOrder(Guid id, [FromBody] UpdateOrderDto dto)
+        {
+            var updated = await _orderService.UpdateOrderAsync(id, dto);
+            if (!updated)
+                return NotFound("Order not found");
+
+            return Ok(new { success = true });
         }
     }
 }

@@ -1,25 +1,125 @@
 <div class="content" *ngIf="order">
-  <h2>Order Details</h2>
+  <div class="header-row">
+    <button class="back-btn" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+    <h2><i class="fas fa-receipt"></i> Order Details</h2>
 
-  <p><strong>ID:</strong> {{ order.id }}</p>
-  <p><strong>Client:</strong> {{ order.clientName }} ({{ order.clientPhone }})</p>
-  <p><strong>Zone:</strong> {{ order.targetZone }}</p>
-  <p><strong>Placed At:</strong> {{ order.placedAt | date:'short' }}</p>
+    <!-- Buton editare (vizibil doar când nu editezi) -->
+    <button *ngIf="canEdit && !isEditing" (click)="isEditing = true" class="edit-btn">
+      <i class="fas fa-pen"></i> Editează Comanda
+    </button>
 
-  <p><strong>Status:</strong>
-    <select [(ngModel)]="newStatus">
-      <option value="Pending">Pending</option>
-      <option value="Preparing">Preparing</option>
-      <option value="Served">Served</option>
+    <!-- Buton anulare (vizibil doar când editezi) -->
+    <button *ngIf="isEditing" (click)="cancelEditing()" class="cancel-btn">
+      <i class="fas fa-times"></i> Anulează
+    </button>
+  </div>
+
+  <!-- INFORMAȚII CLIENT -->
+  <div *ngIf="!isEditing">
+    <p><i class="fas fa-hashtag"></i> <strong>ID:</strong> {{ order.id }}</p>
+    <p><i class="fas fa-user"></i> <strong>Client:</strong> {{ order.clientName }} ({{ order.clientPhone }})</p>
+    <p><i class="fas fa-map-marker-alt"></i> <strong>Zone:</strong> {{ order.targetZone }}</p>
+    <p><i class="fas fa-clock"></i> <strong>Placed At:</strong> {{ getLocalTime(order.placedAt) }}</p>
+  </div>
+
+  <!-- EDITARE CLIENT -->
+  <div *ngIf="isEditing" class="edit-section">
+    <label><strong>Nume client:</strong></label>
+    <input [(ngModel)]="order.clientName" type="text" />
+
+    <label><strong>Telefon client:</strong></label>
+    <input [(ngModel)]="order.clientPhone" type="text" />
+
+    <label><strong>Zonă:</strong></label>
+    <select [(ngModel)]="order.targetZone">
+      <option value="Pool">Piscină</option>
+      <option value="Kitchen">Bucătărie</option>
     </select>
-    <button (click)="updateStatus()">Update</button>
-  </p>
+  </div>
 
-  <hr />
-  <h3>Items:</h3>
-  <ul>
-    <li *ngFor="let item of order.items">
-      {{ item.productName }} – x{{ item.quantity }}
-    </li>
-  </ul>
+  <!-- STATUS -->
+  <div class="status-row">
+    <strong><i class="fas fa-tasks"></i> Status:</strong>
+
+    <div
+      class="order-status"
+      [ngClass]="statusClasses[order.status]"
+      *ngIf="!canUpdateStatus(order.items)"
+    >
+      <i class="fas fa-info-circle"></i> {{ statusLabels[order.status] || order.status }}
+    </div>
+
+    <div class="status-edit" *ngIf="canUpdateStatus(order.items)">
+      <select [(ngModel)]="newStatus" [ngClass]="getStatusClass(newStatus)">
+        <option *ngFor="let option of statusOptions" [value]="option.value">
+          {{ statusLabels[option.value] || option.label }}
+        </option>
+      </select>
+
+      <button class="update-btn" (click)="updateStatus()">
+        <i class="fas fa-check-circle"></i> Actualizează
+      </button>
+    </div>
+  </div>
+
+  <!-- EDITARE MENIU -->
+  <div *ngIf="isEditing" class="edit-menu">
+    <!-- Categorii -->
+    <div class="category-tabs">
+      <button
+        *ngFor="let cat of menu"
+        (click)="changeCategory(cat.category)"
+        [class.active]="selectedCategory === cat.category"
+        type="button"
+      >
+        <i [ngClass]="getCategoryIcon(cat.category)" class="category-icon"></i>
+        {{ cat.category }}
+      </button>
+    </div>
+
+    <!-- Produse -->
+    <div *ngIf="currentCategory" class="product-list">
+      <div *ngFor="let item of currentCategory.items" class="menu-item">
+        <span>{{ item.name }} - {{ item.price }} lei</span>
+        <button type="button" (click)="addToCart(item)">Adaugă</button>
+      </div>
+    </div>
+
+    <!-- Coș -->
+    <div class="cart-section">
+      <h3><i class="fas fa-box-open"></i> Produse în Comandă:</h3>
+      <ul>
+        <li *ngFor="let item of cart">
+          {{ item.name }} – x{{ item.quantity }} ({{ item.price }} lei/buc) = {{ item.price * item.quantity }} lei
+          <button type="button" class="remove-btn" (click)="removeFromCart(item.name)">
+            <i class="fas fa-times"></i>
+          </button>
+        </li>
+      </ul>
+
+      <p class="total-price glow-text">
+        <strong>Total:</strong> {{ getTotal() }} lei
+      </p>
+
+    </div>
+
+
+    <!-- Salvare modificări -->
+    <button class="submit-button" (click)="submitEdit()">
+      <i class="fas fa-save"></i> Salvează Modificările
+    </button>
+  </div>
+
+  <!-- Produse (vizibil doar în modul afișare) -->
+  <div *ngIf="!isEditing">
+    <hr />
+    <h3><i class="fas fa-box-open"></i> Produse:</h3>
+    <ul>
+      <li *ngFor="let item of order.items">
+        {{ item.productName }} – x{{ item.quantity }}
+      </li>
+    </ul>
+  </div>
 </div>

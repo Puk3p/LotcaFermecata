@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Identity;
 using SP25.Business.ModelMapping;
 using SP25.Business.Services.Contracts;
@@ -20,22 +19,19 @@ namespace SP25.WebApi
             {
                 options.AddPolicy("AllowFrontendDev", policy =>
                 {
-                    policy.WithOrigins("http://localhost:63140")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod()
-                          .AllowCredentials();
+                    policy
+                        .WithOrigins("http://localhost:63140")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
                 });
             });
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<MyDbContext>();
-
-
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<MyDbContext>()
-                .AddDefaultTokenProviders();
 
             builder.Services.ConfigureJwtAuthentication(builder.Configuration, logger: Serilog.Log.Logger);
 
@@ -43,14 +39,12 @@ namespace SP25.WebApi
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IWorkZoneService, WorkZoneService>();
 
-
             builder.Services.AddAutoMapper(typeof(MappingProfile));
-
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<ITestService, TestService>();
 
-
             var app = builder.Build();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -58,10 +52,11 @@ namespace SP25.WebApi
             }
 
             app.UseHttpsRedirection();
+
             app.UseCors("AllowFrontendDev");
+
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

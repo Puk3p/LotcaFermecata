@@ -15,7 +15,7 @@
 
     <hr />
 
-    <!-- CATEGORII MENIU -->
+    <!-- CATEGORII MENIU CU ICOANE -->
     <h3><i class="fas fa-list"></i> Categories</h3>
     <div class="category-tabs">
       <button
@@ -24,13 +24,17 @@
         [class.active]="selectedCategory === cat.category"
         type="button"
       >
+        <i [ngClass]="getCategoryIcon(cat.category)" class="category-icon"></i>
         {{ cat.category }}
       </button>
     </div>
 
     <!-- PRODUSE DIN CATEGORIE -->
     <div class="menu-items" *ngIf="currentCategory">
-      <h3><i class="fas fa-hamburger"></i> {{ currentCategory.category }}</h3>
+      <h3>
+        <i class="fas fa-hamburger"></i>
+        {{ currentCategory.category }}
+      </h3>
       <div *ngFor="let item of currentCategory.items" class="menu-item">
         <span>{{ item.name }} - {{ item.price }} lei</span>
         <button type="button" (click)="addToCart(item)">Add</button>
@@ -44,7 +48,8 @@
       <h3><i class="fas fa-shopping-cart"></i> Cart</h3>
       <ul>
         <li *ngFor="let item of cart">
-          {{ item.name }} (x{{ item.quantity }}) — <strong>{{ item.price * item.quantity }} lei</strong>
+          {{ item.name }} (x{{ item.quantity }}) —
+          <strong>{{ item.price * item.quantity }} lei</strong>
           <button type="button" class="remove-btn" (click)="removeFromCart(item.name)">
             <i class="fas fa-times"></i>
           </button>

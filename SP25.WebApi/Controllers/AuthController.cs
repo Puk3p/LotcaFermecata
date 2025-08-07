@@ -44,17 +44,25 @@ namespace SP25.WebApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
-            var user = await _userManager.FindByNameAsync(model.Username);
-            if (user == null)
-                return Unauthorized("Invalid credentials");
+            try
+            {
+                var user = await _userManager.FindByNameAsync(model.Username);
+                if (user == null)
+                    return Unauthorized("Invalid credentials");
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-            if (!result.Succeeded)
-                return Unauthorized("Invalid credentials");
+                var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                if (!result.Succeeded)
+                    return Unauthorized("Invalid credentials");
 
-            var token = _jwtTokenService.GenerateToken(user.Id, user.UserName);
+                var token = _jwtTokenService.GenerateToken(user.Id, user.UserName);
 
-            return Ok(new { token });
+                return Ok(new { token });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal error", ex.Message, ex.StackTrace });
+            }
         }
+
     }
 }

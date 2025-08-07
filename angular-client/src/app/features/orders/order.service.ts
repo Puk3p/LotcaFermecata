@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateOrder, Order } from './order.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  private apiUrl = 'http://localhost:7227/api/orders'; // endpoint real backend
+  private apiUrl = '/api/Order';
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +21,21 @@ export class OrderService {
     return this.http.post<Order>(`${this.apiUrl}`, order);
   }
 
-  updateStatus(id: string, newStatus: string): Observable<boolean> {
-    return this.http.put<boolean>(`${this.apiUrl}/${id}/status`, { status: newStatus });
+  updateStatus(id: string, newStatus: string): Observable<{ success: boolean }> {
+    const body = {
+      OrderId: id,
+      NewStatus: newStatus
+    };
+
+    return this.http.patch<{ success: boolean }>(`${this.apiUrl}/update-status`, body);
   }
+
+  getOrdersForZone(zone: string): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}/zone/${zone}`);
+  }
+
+  updateOrder(order: Order) {
+    return this.http.put<{ success: boolean }>(`${this.apiUrl}/${order.id}`, order);
+  }
+
 }

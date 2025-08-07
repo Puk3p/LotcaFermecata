@@ -2,6 +2,7 @@
 export interface OrderItem {
   productName: string;
   quantity: number;
+  price?: number;
 }
 
 export interface Order {
@@ -16,10 +17,11 @@ export interface Order {
 }
 
 export interface CreateOrder {
-  clientName?: string;
-  clientPhone?: string;
+  clientName: string;
+  clientPhone: string;
   targetZone: string;
   items: OrderItem[];
+  placedByUserId: string;
 }
 
 export interface MenuItem {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SP25.Domain.Migrations
 {
     /// <inheritdoc />
-    public partial class Orders : Migration
+    public partial class Lover : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

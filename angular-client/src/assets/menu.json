@@ -43,7 +43,7 @@
   {
     "category": "Bere fără alcool",
     "items": [
-      { "name": "Stella", "price": 0 },
+      { "name": "Stella", "price": 10 },
       { "name": "Bergenbier", "price": 8 },
       { "name": "Fresh", "price": 8 },
       { "name": "Ciuc Radler", "price": 10 },

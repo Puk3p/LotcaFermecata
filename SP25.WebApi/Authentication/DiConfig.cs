@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using SP25.Domain.Context;
-using SP25.WebApi.Authentication;
+using SP25.Domain.Models;
 using System.Text;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 namespace SP25.WebApi.Authentication;
 
 public static class DiConfig
@@ -14,17 +14,13 @@ public static class DiConfig
         var jwtAppSettingOptions = configuration.GetSection("JwtOptions").Get<JwtOptionsSettings>();
         var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtAppSettingOptions.SigningKey));
 
-        // configure database link to an IdentityUser using Entity Framework
-        services.AddIdentityCore<IdentityUser>()
-            .AddRoles<IdentityRole>()
-            .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("nfm-provider")
+        // ✅ Înregistrăm UserManager + SignInManager + RoleManager
+        services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<MyDbContext>()
             .AddDefaultTokenProviders();
 
         services.Configure<IdentityOptions>(options =>
         {
-            // NOTE: IOptions<IdentityOptions> is available for dependency injection, and it's being used inside the Identity framework or other frameworks that depend on options
-            // configure our own preferred policies
             options.Password.RequireDigit = false;
             options.Password.RequireLowercase = false;
             options.Password.RequireNonAlphanumeric = false;
@@ -58,12 +54,19 @@ public static class DiConfig
                     {
                         logger.Warning($"Failed authentication attempt: {context.Exception.Message} - {context.Request.Headers["Authorization"]}");
                         return Task.CompletedTask;
+                    },
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse();
+                        context.Response.StatusCode = 401;
+                        context.Response.ContentType = "application/json";
+                        var json = System.Text.Json.JsonSerializer.Serialize(new { message = "Unauthorized" });
+                        return context.Response.WriteAsync(json);
                     }
                 };
             });
 
-        // NOTE: IOptions<JwtOptions> is available for dependency injection (Eg: used inside AuthController)
-        // they inject configured values necessary for JWT token generation
+        // Injectăm opțiunile JWT folosite de JwtTokenService
         services.Configure<JwtOptions>(options =>
         {
             options.Issuer = jwtAppSettingOptions.Issuer;
@@ -72,7 +75,7 @@ public static class DiConfig
 
             if (int.TryParse(jwtAppSettingOptions.ValidForSeconds, out var validFor))
             {
-                options.ValidFor = new TimeSpan(0, 0, validFor);
+                options.ValidFor = TimeSpan.FromSeconds(validFor);
             }
         });
     }

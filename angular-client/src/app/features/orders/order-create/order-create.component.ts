@@ -60,6 +60,12 @@ export class OrderCreateComponent implements OnInit {
   }
 
   createOrder() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Trebuie să fii autentificat pentru a trimite comanda!');
+      return;
+    }
+
     const items: OrderItem[] = this.cart.map(i => ({
       productName: i.name,
       quantity: i.quantity
@@ -69,16 +75,40 @@ export class OrderCreateComponent implements OnInit {
       clientName: this.clientName,
       clientPhone: this.clientPhone,
       targetZone: this.targetZone,
-      items: items
+      items: items,
+      placedByUserId: localStorage.getItem('userId') || 'anonymous'
     };
 
-    this.orderService.create(payload).subscribe(() => {
-      this.router.navigate(['/orders']);
+    this.orderService.create(payload).subscribe({
+      next: () => {
+        this.router.navigate(['/orders']);
+      },
+      error: (err) => {
+        console.error('Eroare la creare comandă:', err);
+        alert('Comanda nu a putut fi trimisă. Verifică autentificarea sau reîncearcă.');
+      }
     });
   }
 
+
   getTotal(): number {
     return this.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }
+
+  getCategoryIcon(category: string): string {
+    switch (category) {
+      case 'Cafea & Răcoritoare': return 'fas fa-coffee';
+      case 'Energizante & Cidru': return 'fas fa-bolt';
+      case 'Bere': return 'fas fa-beer';
+      case 'Bere fără alcool': return 'fas fa-ban';
+      case 'Tărie': return 'fas fa-glass-whiskey';
+      case 'Vinuri & Spumant': return 'fas fa-wine-glass';
+      case 'Mâncare': return 'fas fa-utensils';
+      case 'Garnituri & Salate': return 'fas fa-leaf';
+      case 'Sosuri & Condimente': return 'fas fa-pepper-hot';
+      case 'Desert': return 'fas fa-ice-cream';
+      default: return 'fas fa-question';
+    }
   }
 
 }
