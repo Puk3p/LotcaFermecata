@@ -43,6 +43,6 @@ export interface MenuCategory {
 export interface GroupedOrdersDto {
   active: Order[];
   completed: Order[];
-  canceled: Order[];
+  cancelled: Order[];
   archivedGrouped: { [date: string]: Order[] };
 }

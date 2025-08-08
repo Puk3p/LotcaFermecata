@@ -110,19 +110,32 @@ namespace SP25.WebApi.Controllers
             return Ok(orders);
         }
 
-        [HttpGet("grouped-by-date")]
-        public async Task<IActionResult> GetOrdersGroupedByDate()
+        [HttpGet("active")]
+        public async Task<IActionResult> GetActiveOrders()
         {
-            try
-            {
-                var grouped = await _orderService.GetGroupedByDateAsync();
-                return Ok(grouped);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
+            var orders = await _orderService.GetActiveOrdersAsync();
+            return Ok(orders);
         }
 
+        [HttpGet("completed")]
+        public async Task<IActionResult> GetCompletedOrders()
+        {
+            var orders = await _orderService.GetCompletedOrdersAsync();
+            return Ok(orders);
+        }
+
+        [HttpGet("cancelled")]
+        public async Task<IActionResult> GetCancelledOrders()
+        {
+            var orders = await _orderService.GetCancelledOrdersAsync();
+            return Ok(orders);
+        }
+
+        [HttpGet("archived")]
+        public async Task<IActionResult> GetArchivedGrouped()
+        {
+            var grouped = await _orderService.GetArchivedGroupedAsync();
+            return Ok(grouped);
+        }
     }
 }

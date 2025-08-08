@@ -63,9 +63,23 @@
 
       <span class="spacer"></span>
 
-      <button mat-icon-button>
-        <mat-icon>account_circle</mat-icon>
-      </button>
+      <div class="profile-wrapper" (clickOutside)="showDropdown = false" clickOutside>
+        <button mat-icon-button (click)="toggleDropdown()" class="profile-btn">
+          <i class="fas fa-user-circle"></i>
+        </button>
+
+        <div *ngIf="showDropdown" class="profile-dropdown" [@dropdownAnimation]>
+          <p><strong>Rol curent:</strong></p>
+          <p style="color: #4B0082;">{{ currentRole }}</p>
+          <button (click)="toggleRole()">
+            <i class="fas fa-sync-alt"></i>
+            Schimbă rolul în {{ currentRole === 'BAR' ? 'BUCATĂRIE' : 'BAR' }}
+          </button>
+        </div>
+      </div>
+
+
+
     </mat-toolbar>
 
     <div class="content">
