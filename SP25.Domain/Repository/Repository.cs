@@ -60,5 +60,10 @@ namespace SP25.Domain.Repository
         {
             _context.SaveChanges();
         }
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await _context.Set<T>().ToListAsync();
+        }
+
     }
 }

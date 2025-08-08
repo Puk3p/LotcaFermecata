@@ -1,1 +1,66 @@
-<p>orders works!</p>
+<div class="dashboard">
+  <h2>Panou Comenzi</h2>
+
+  <div class="dashboard-tabs">
+    <div
+      class="tab-card"
+      [class.active]="selectedTab === 'active'"
+      (click)="selectTab('active')"
+    >
+      <h3>Active</h3>
+      <p>{{ activeOrders?.length || 0 }} comenzi</p>
+    </div>
+
+    <div
+      class="tab-card"
+      [class.active]="selectedTab === 'completed'"
+      (click)="selectTab('completed')"
+    >
+      <h3>Finalizate</h3>
+      <p>{{ completedOrders?.length || 0 }} comenzi</p>
+    </div>
+
+    <div
+      class="tab-card"
+      [class.active]="selectedTab === 'canceled'"
+      (click)="selectTab('canceled')"
+    >
+      <h3>Anulate</h3>
+      <p>{{ canceledOrders?.length || 0 }} comenzi</p>
+    </div>
+
+    <div
+      class="tab-card"
+      [class.active]="selectedTab === 'archive'"
+      (click)="selectTab('archive')"
+    >
+      <h3>Arhivate</h3>
+      <p>{{ archivedOrders?.length || 0 }} comenzi</p>
+    </div>
+  </div>
+
+  <!-- Taburi active / completed / canceled -->
+  <ng-container *ngIf="selectedTab !== 'archive'">
+    <div class="orders-list">
+      <app-order-list [orders]="getCurrentTabOrders() || []"></app-order-list>
+    </div>
+  </ng-container>
+
+  <!-- Tab Arhivate -->
+  <ng-container *ngIf="selectedTab === 'archive'">
+    <div class="orders-list">
+      <div *ngFor="let day of getArchivedDates()" class="archive-day">
+        <h4>{{ day }}</h4>
+
+        <!-- Verificare safe pentru strict mode -->
+        <ng-container *ngIf="archivedGrouped && archivedGrouped[day] && archivedGrouped[day].length > 0">
+          <app-order-list [orders]="archivedGrouped[day]"></app-order-list>
+        </ng-container>
+
+        <p *ngIf="!archivedGrouped || !archivedGrouped[day] || archivedGrouped[day].length === 0">
+          Nicio comandă arhivată în această zi.
+        </p>
+      </div>
+    </div>
+  </ng-container>
+</div>

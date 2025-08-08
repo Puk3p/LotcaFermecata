@@ -14,5 +14,7 @@ namespace SP25.Business.Services.Contracts
         Task<bool> UpdateOrderStatusAsync(Guid orderId, string newStatus);
         Task<OrderDto> GetOrderByIdAsync(Guid orderId);
         Task<bool> UpdateOrderAsync(Guid orderId, UpdateOrderDto dto);
+        Task<IEnumerable<OrderDto>> GetAllAsync();
+        Task<GroupedOrdersDto> GetGroupedByDateAsync();
     }
 }

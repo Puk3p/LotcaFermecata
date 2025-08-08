@@ -102,5 +102,27 @@ namespace SP25.WebApi.Controllers
 
             return Ok(new { success = true });
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllOrders()
+        {
+            var orders = await _orderService.GetAllAsync();
+            return Ok(orders);
+        }
+
+        [HttpGet("grouped-by-date")]
+        public async Task<IActionResult> GetOrdersGroupedByDate()
+        {
+            try
+            {
+                var grouped = await _orderService.GetGroupedByDateAsync();
+                return Ok(grouped);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
     }
 }

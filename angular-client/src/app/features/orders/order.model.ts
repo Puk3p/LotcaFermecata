@@ -1,4 +1,10 @@
-// order.model.ts
+export enum OrderStatus {
+  Pending = 0,
+  InProgress = 1,
+  Done = 2,
+  Cancelled = 3
+}
+
 export interface OrderItem {
   productName: string;
   quantity: number;
@@ -34,3 +40,9 @@ export interface MenuCategory {
   items: MenuItem[];
 }
 
+export interface GroupedOrdersDto {
+  active: Order[];
+  completed: Order[];
+  canceled: Order[];
+  archivedGrouped: { [date: string]: Order[] };
+}

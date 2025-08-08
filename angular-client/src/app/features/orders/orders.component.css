@@ -1,0 +1,62 @@
+.dashboard-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.tab-card {
+  flex: 1 1 160px;
+  max-width: 200px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.tab-card:hover {
+  background-color: #e0e0e0;
+}
+
+.tab-card.active {
+  background-color: #4B0082;
+  color: white;
+}
+
+.archive-day {
+  border-top: 1px solid #ccc;
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
+}
+
+.new-order-btn {
+  background-color: #4B0082;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: background-color 0.2s, transform 0.2s;
+  margin-top: 0.5rem;
+}
+
+.new-order-btn:hover {
+  background-color: #370062;
+  transform: scale(1.05);
+}
+
+/* Responsive pentru telefon */
+@media (max-width: 768px) {
+  .tab-card {
+    width: 90%;
+    max-width: 300px;
+    font-size: 0.85rem;
+    padding: 0.5rem;
+  }
+}

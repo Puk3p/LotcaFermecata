@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { OrderService } from '../order.service';
 import { Order } from '../order.model';
 import { CommonModule } from '@angular/common';
@@ -46,13 +46,18 @@ export class OrderDetailsComponent implements OnInit {
   currentCategory: any = null;
   cart: { name: string, quantity: number, price: number }[] = [];
 
+  selectedTab: string = 'active';
+
   constructor(
     private route: ActivatedRoute,
     private orderService: OrderService,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.selectedTab = this.route.snapshot.queryParamMap.get('tab') || 'active';
+
     const id = this.route.snapshot.paramMap.get('id')!;
 
     const orderPromise = this.orderService.getById(id).toPromise();
@@ -83,7 +88,9 @@ export class OrderDetailsComponent implements OnInit {
 
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/orders'], {
+      queryParams: { tab: this.selectedTab }
+    });
   }
 
   updateStatus(): void {

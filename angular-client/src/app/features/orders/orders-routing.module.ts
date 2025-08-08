@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { OrdersComponent } from './orders.component'; // adaugă asta
 import { OrderListComponent } from './order-list/order-list.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { OrderCreateComponent } from './order-create/order-create.component';
 
 const routes: Routes = [
-  { path: '', component: OrderListComponent },
+  { path: '', component: OrdersComponent }, // <<<<< asta e ce trebuie
   { path: 'new', component: OrderCreateComponent },
   { path: ':id', component: OrderDetailsComponent }
 ];

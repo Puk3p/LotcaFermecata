@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Order } from '../order.model';
 import { OrderService } from '../order.service';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { AuthService } from '../../../auth/auth.service';
   imports: [CommonModule, RouterModule, FormsModule]
 })
 export class OrderListComponent implements OnInit {
-  orders: Order[] = [];
+  @Input() orders: Order[] = [];
   currentUserId = '';
   currentRole: 'BAR' | 'BUCATARIE' = 'BAR';
 

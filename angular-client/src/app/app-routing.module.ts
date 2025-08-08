@@ -21,20 +21,21 @@ const routes: Routes = [
         path: 'orders',
         loadChildren: () =>
           import('./features/orders/orders.module').then(m => m.OrdersModule)
+      },
+      {
+        path: 'auth/login',
+        loadComponent: () =>
+          import('./auth/login/login.component').then(m => m.LoginComponent)
+      },
+      {
+        path: 'auth/register',
+        loadComponent: () =>
+          import('./auth/register/register.component').then(m => m.RegisterComponent)
       }
     ]
-  },
-  {
-    path: 'auth/login',
-    loadComponent: () =>
-      import('./auth/login/login.component').then(m => m.LoginComponent)
-  },
-  {
-    path: 'auth/register',
-    loadComponent: () =>
-      import('./auth/register/register.component').then(m => m.RegisterComponent)
   }
 ];
+
 
 
 

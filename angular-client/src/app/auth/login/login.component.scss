@@ -2,63 +2,83 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  padding: 1rem;
-  background-color: #4B0082; // Velvet Indigo
-  color: #E5E4E2; // Platinum Frost
-  font-family: 'Segoe UI', sans-serif;
+
+  height: calc(100vh - 64px); // scade topbar-ul
+  width: 100%;
+  padding: 2rem;
+  background-color: #E5E4E2; // fundal general deschis
+  font-family: 'Segoe UI', 'Josefin Sans', sans-serif;
+  box-sizing: border-box;
 }
 
 .login-form {
-  background-color: #fff;
+  background-color: #4B0082; // fundal mov (Velvet Indigo)
+  color: #E5E4E2; // text deschis
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: 0 0 20px rgba(75, 0, 130, 0.4);
+
   width: 100%;
-  max-width: 360px;
+  max-width: 400px;
+
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
 }
 
-.login-form input {
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+.login-form label {
+  font-weight: bold;
+  font-size: 0.95rem;
+  color: #E5E4E2;
+}
+
+.login-form input,
+.login-form select {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
   font-size: 1rem;
+  background-color: #E5E4E2;
+  color: #4B0082;
+  transition: all 0.2s ease;
 }
 
-.login-form input:focus {
-  border-color: #4B0082;
+.login-form input:focus,
+.login-form select:focus {
+  box-shadow: 0 0 5px #E5E4E2;
   outline: none;
-  box-shadow: 0 0 5px #4B0082;
 }
 
 .login-form button {
   padding: 0.75rem;
-  background-color: #4B0082;
-  color: white;
+  background-color: #E5E4E2;
+  color: #4B0082;
   font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s;
+  font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
 .login-form button:hover {
-  background-color: #360065;
+  background-color: #d6d6d4;
+  box-shadow: 0 0 10px #E5E4E2;
 }
 
 .login-form a {
   text-align: center;
-  color: #4B0082;
+  color: #E5E4E2;
   font-weight: 500;
+  font-size: 0.95rem;
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .login-form a:hover {
-  color: #2d0051;
+  color: #ffffff;
+  text-decoration: underline;
 }
 
 @media (max-width: 480px) {
@@ -72,6 +92,7 @@
   }
 
   .login-form input,
+  .login-form select,
   .login-form button {
     font-size: 0.95rem;
     padding: 0.6rem;

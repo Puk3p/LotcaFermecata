@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateOrder, Order } from './order.model';
+import { CreateOrder, GroupedOrdersDto, Order } from './order.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
@@ -38,4 +38,11 @@ export class OrderService {
     return this.http.put<{ success: boolean }>(`${this.apiUrl}/${order.id}`, order);
   }
 
+  getAllOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}`);
+  }
+
+  getGroupedOrders() : Observable<GroupedOrdersDto> {
+    return this.http.get<GroupedOrdersDto>(`${this.apiUrl}/grouped-by-date`);
+  }
 }

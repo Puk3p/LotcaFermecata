@@ -1,22 +1,22 @@
 <div class="order-form-container">
-  <h2><i class="fas fa-utensils"></i> Create Order</h2>
+  <h2><i class="fas fa-utensils"></i> Creează Comandă</h2>
 
   <form (ngSubmit)="createOrder()" class="order-form">
     <!-- INFO CLIENT -->
     <div class="form-group">
-      <label><i class="fas fa-user"></i> Client Name:</label>
+      <label><i class="fas fa-user"></i> Nume Client:</label>
       <input type="text" [(ngModel)]="clientName" name="clientName" required />
     </div>
 
     <div class="form-group">
-      <label><i class="fas fa-phone"></i> Client Phone:</label>
+      <label><i class="fas fa-phone"></i> Telefon Client:</label>
       <input type="text" [(ngModel)]="clientPhone" name="clientPhone" required />
     </div>
 
     <hr />
 
     <!-- CATEGORII MENIU CU ICOANE -->
-    <h3><i class="fas fa-list"></i> Categories</h3>
+    <h3><i class="fas fa-list"></i> Categorii</h3>
     <div class="category-tabs">
       <button
         *ngFor="let cat of menu"
@@ -37,7 +37,7 @@
       </h3>
       <div *ngFor="let item of currentCategory.items" class="menu-item">
         <span>{{ item.name }} - {{ item.price }} lei</span>
-        <button type="button" (click)="addToCart(item)">Add</button>
+        <button type="button" (click)="addToCart(item)">Adaugă</button>
       </div>
     </div>
 
@@ -45,7 +45,7 @@
 
     <!-- COȘ -->
     <div class="cart-section">
-      <h3><i class="fas fa-shopping-cart"></i> Cart</h3>
+      <h3><i class="fas fa-shopping-cart"></i> Coș</h3>
       <ul>
         <li *ngFor="let item of cart">
           {{ item.name }} (x{{ item.quantity }}) —
@@ -63,7 +63,7 @@
     </div>
 
     <button type="submit" class="submit-button">
-      <i class="fas fa-paper-plane"></i> Submit Order
+      <i class="fas fa-paper-plane"></i> Trimite Comanda
     </button>
   </form>
 </div>

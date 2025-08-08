@@ -5,7 +5,6 @@ html, body {
   font-family: 'Josefin Sans', sans-serif;
   overflow-x: hidden;
 }
-
 .sidenav-container {
   height: 100vh;
   width: 100%;
@@ -30,6 +29,9 @@ mat-sidenav-content,
 .content {
   overflow-x: hidden !important;
   max-width: 100% !important;
+
+  padding: 0;
+  margin: 0;
 }
 
 /* SIDEBAR */
@@ -116,11 +118,17 @@ mat-sidenav-content,
   white-space: nowrap;
 }
 
+
 .mat-nav-list a:hover,
 .mat-nav-list a.active-link {
   background: rgba(255, 255, 255, 0.15);
   padding-left: 1.3rem;
 }
+
+.mat-nav-list a .text {
+  color: #E5E4E2 !important;
+}
+
 
 /* Icon */
 .nav-icon {
