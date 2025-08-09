@@ -11,6 +11,7 @@ namespace SP25.Domain.Context
         public DbSet<WorkZoneAuditLog> WorkZoneAuditLogs { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<PushSubscriptionEntity> PushSubscriptions { get; set; } = default!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

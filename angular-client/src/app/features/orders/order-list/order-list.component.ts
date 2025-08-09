@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Order } from '../order.model';
-import { OrderService } from '../order.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +14,8 @@ import { AuthService } from '../../../auth/auth.service';
 })
 export class OrderListComponent implements OnInit {
   @Input() orders: Order[] = [];
-  currentUserId = '';
+  @Input() tab: 'active' | 'completed' | 'canceled' | 'archive' = 'active';
+  
   currentRole: 'BAR' | 'BUCATARIE' = 'BAR';
 
   statusLabels: { [key: string]: string } = {
@@ -25,26 +25,11 @@ export class OrderListComponent implements OnInit {
     Cancelled: 'Anulată'
   };
 
-
-  constructor(
-    private orderService: OrderService,
-    private authService: AuthService
-  ) {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     const roleFromStorage = localStorage.getItem('role') as 'BAR' | 'BUCATARIE';
     this.currentRole = roleFromStorage || 'BAR';
-
-    const zone = this.currentRole === 'BAR' ? 'Pool' : 'Kitchen';
-
-    this.orderService.getOrdersForZone(zone).subscribe({
-      next: (orders) => {
-        this.orders = orders;
-      },
-      error: (err) => {
-        console.error('Eroare la încărcarea comenzilor:', err);
-      }
-    });
   }
 
   getLocalTime(date: string | Date): string {
@@ -58,4 +43,15 @@ export class OrderListComponent implements OnInit {
       minute: '2-digit'
     });
   }
+
+  formatPhone(phone: string): string {
+    if (!phone.startsWith('+40')) {
+      if (phone.startsWith('0')) {
+        phone = phone.substring(1);
+      }
+      return '+40 ' + phone;
+    }
+    return phone;
+  }
+
 }

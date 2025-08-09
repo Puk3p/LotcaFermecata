@@ -42,6 +42,8 @@ namespace SP25.WebApi
             builder.Services.AddAutoMapper(typeof(MappingProfile));
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<ITestService, TestService>();
+            builder.Services.AddScoped<INotificationService, NotificationService>();
+
 
             var app = builder.Build();
 

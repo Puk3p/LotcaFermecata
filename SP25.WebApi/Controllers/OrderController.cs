@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SP25.Business.ModelDTOs;
 using SP25.Business.Services.Contracts;
@@ -14,10 +14,12 @@ namespace SP25.WebApi.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly INotificationService _notifications;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService, INotificationService notifications)
         {
             _orderService = orderService;
+            _notifications = notifications;
         }
 
         [HttpGet("ping")]
@@ -60,21 +62,30 @@ namespace SP25.WebApi.Controllers
         [HttpPatch("update-status")]
         public async Task<IActionResult> UpdateOrderStatus([FromBody] UpdateOrderStatusDto dto)
         {
-            Console.WriteLine($"Received OrderId: {dto.OrderId}, NewStatus: {dto.NewStatus}");
+            if (dto == null || dto.OrderId == Guid.Empty || string.IsNullOrWhiteSpace(dto.NewStatus))
+                return BadRequest(new { success = false, message = "OrderId și NewStatus sunt necesare." });
 
-            var success = await _orderService.UpdateOrderStatusAsync(dto.OrderId, dto.NewStatus);
-
+            var success = await _orderService.UpdateStatusAsync(dto);
             if (!success)
+                return BadRequest(new { success = false, message = "Actualizarea statusului a eșuat." });
+
+            // (opțional) dacă vrei, poți verifica aici că userul are rol BUCĂTĂRIE din JWT/claims
+            var isDone = string.Equals(dto.NewStatus, "Done", StringComparison.OrdinalIgnoreCase);
+            if (isDone)
             {
-                Console.WriteLine("FAILED to update: order not found or status invalid.");
-                return NotFound("Order or status not found");
+                _ = _notifications
+                    .NotifyOrderStatusChangedAsync(dto.OrderId.ToString(), dto.NewStatus, "BAR")
+                    .ContinueWith(t =>
+                    {
+                        if (t.IsFaulted)
+                        {
+                            // TODO: log t.Exception
+                        }
+                    });
             }
 
             return Ok(new { success = true });
         }
-
-
-
 
         [HttpGet("{orderId}")]
         public async Task<IActionResult> GetOrderById(Guid orderId)
@@ -110,19 +121,32 @@ namespace SP25.WebApi.Controllers
             return Ok(orders);
         }
 
-        [HttpGet("grouped-by-date")]
-        public async Task<IActionResult> GetOrdersGroupedByDate()
+        [HttpGet("active")]
+        public async Task<IActionResult> GetActiveOrders()
         {
-            try
-            {
-                var grouped = await _orderService.GetGroupedByDateAsync();
-                return Ok(grouped);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
+            var orders = await _orderService.GetActiveOrdersAsync();
+            return Ok(orders);
         }
 
+        [HttpGet("completed")]
+        public async Task<IActionResult> GetCompletedOrders()
+        {
+            var orders = await _orderService.GetCompletedOrdersAsync();
+            return Ok(orders);
+        }
+
+        [HttpGet("cancelled")]
+        public async Task<IActionResult> GetCancelledOrders()
+        {
+            var orders = await _orderService.GetCancelledOrdersAsync();
+            return Ok(orders);
+        }
+
+        [HttpGet("archived")]
+        public async Task<IActionResult> GetArchivedGrouped()
+        {
+            var grouped = await _orderService.GetArchivedGroupedAsync();
+            return Ok(grouped);
+        }
     }
 }

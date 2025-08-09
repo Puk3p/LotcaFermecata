@@ -10,6 +10,7 @@
       <i class="fas fa-pen"></i> Editează Comanda
     </button>
 
+
     <!-- Buton anulare (vizibil doar când editezi) -->
     <button *ngIf="isEditing" (click)="cancelEditing()" class="cancel-btn">
       <i class="fas fa-times"></i> Anulează
@@ -43,26 +44,24 @@
   <div class="status-row">
     <strong><i class="fas fa-tasks"></i> Status:</strong>
 
-    <div
-      class="order-status"
-      [ngClass]="statusClasses[order.status]"
-      *ngIf="!canUpdateStatus(order.items)"
-    >
+    <div class="order-status"
+        [ngClass]="statusClasses[order.status]"
+        *ngIf="!canUpdateStatusForRole(order.items)">
       <i class="fas fa-info-circle"></i> {{ statusLabels[order.status] || order.status }}
     </div>
 
-    <div class="status-edit" *ngIf="canUpdateStatus(order.items)">
+    <div class="status-edit" *ngIf="canUpdateStatusForRole(order.items)">
       <select [(ngModel)]="newStatus" [ngClass]="getStatusClass(newStatus)">
         <option *ngFor="let option of statusOptions" [value]="option.value">
           {{ statusLabels[option.value] || option.label }}
         </option>
       </select>
-
       <button class="update-btn" (click)="updateStatus()">
         <i class="fas fa-check-circle"></i> Actualizează
       </button>
     </div>
   </div>
+
 
   <!-- EDITARE MENIU -->
   <div *ngIf="isEditing" class="edit-menu">

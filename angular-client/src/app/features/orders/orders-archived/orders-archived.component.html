@@ -1,0 +1,16 @@
+<div class="orders-page">
+  <h2>Comenzi Arhivate</h2>
+
+  <div *ngFor="let date of getSortedDates()">
+    <h3>{{ date }}</h3>
+
+    <ng-container *ngIf="groupedOrders && groupedOrders[date] as ordersInDay; else noOrders">
+      <app-order-list [orders]="ordersInDay"></app-order-list>
+      <p *ngIf="ordersInDay.length === 0">Nicio comandă în această zi.</p>
+    </ng-container>
+
+    <ng-template #noOrders>
+      <p>Nicio comandă în această zi.</p>
+    </ng-template>
+  </div>
+</div>

@@ -1,48 +1,33 @@
+<!-- orders.component.html -->
 <div class="dashboard">
   <h2>Panou Comenzi</h2>
 
   <div class="dashboard-tabs">
-    <div
-      class="tab-card"
-      [class.active]="selectedTab === 'active'"
-      (click)="selectTab('active')"
-    >
+    <div class="tab-card" [class.active]="selectedTab === 'active'"  routerLink="/orders/active">
       <h3>Active</h3>
-      <p>{{ activeOrders?.length || 0 }} comenzi</p>
+      <p>{{ activeCount }} comenzi</p>
     </div>
 
-    <div
-      class="tab-card"
-      [class.active]="selectedTab === 'completed'"
-      (click)="selectTab('completed')"
-    >
+    <div class="tab-card" [class.active]="selectedTab === 'completed'" routerLink="/orders/completed">
       <h3>Finalizate</h3>
-      <p>{{ completedOrders?.length || 0 }} comenzi</p>
+      <p>{{ completedCount }} comenzi</p>
     </div>
 
-    <div
-      class="tab-card"
-      [class.active]="selectedTab === 'canceled'"
-      (click)="selectTab('canceled')"
-    >
+    <div class="tab-card" [class.active]="selectedTab === 'canceled'" routerLink="/orders/canceled">
       <h3>Anulate</h3>
-      <p>{{ canceledOrders?.length || 0 }} comenzi</p>
+      <p>{{ canceledCount }} comenzi</p>
     </div>
 
-    <div
-      class="tab-card"
-      [class.active]="selectedTab === 'archive'"
-      (click)="selectTab('archive')"
-    >
+    <div class="tab-card" [class.active]="selectedTab === 'archive'" routerLink="/orders/archive">
       <h3>Arhivate</h3>
-      <p>{{ archivedOrders?.length || 0 }} comenzi</p>
+      <p>{{ archivedCount }} comenzi</p>
     </div>
   </div>
 
-  <!-- Taburi active / completed / canceled -->
+  <!-- Taburi non-archive -->
   <ng-container *ngIf="selectedTab !== 'archive'">
     <div class="orders-list">
-      <app-order-list [orders]="getCurrentTabOrders() || []"></app-order-list>
+      <app-order-list [orders]="currentOrders"></app-order-list>
     </div>
   </ng-container>
 
@@ -52,7 +37,6 @@
       <div *ngFor="let day of getArchivedDates()" class="archive-day">
         <h4>{{ day }}</h4>
 
-        <!-- Verificare safe pentru strict mode -->
         <ng-container *ngIf="archivedGrouped && archivedGrouped[day] && archivedGrouped[day].length > 0">
           <app-order-list [orders]="archivedGrouped[day]"></app-order-list>
         </ng-container>

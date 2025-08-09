@@ -15,6 +15,11 @@ namespace SP25.Business.Services.Contracts
         Task<OrderDto> GetOrderByIdAsync(Guid orderId);
         Task<bool> UpdateOrderAsync(Guid orderId, UpdateOrderDto dto);
         Task<IEnumerable<OrderDto>> GetAllAsync();
-        Task<GroupedOrdersDto> GetGroupedByDateAsync();
+        Task<List<OrderDto>> GetActiveOrdersAsync();
+        Task<List<OrderDto>> GetCompletedOrdersAsync();
+        Task<List<OrderDto>> GetCancelledOrdersAsync();
+        Task<Dictionary<string, List<OrderDto>>> GetArchivedGroupedAsync();
+        Task<bool> UpdateStatusAsync(UpdateOrderStatusDto dto);
+
     }
 }

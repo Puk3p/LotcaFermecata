@@ -204,3 +204,29 @@
     font-size: 0.85rem;
   }
 }
+
+.phone {
+  display: flex;
+  align-items: center;
+  font-size: 16px; /* mărit față de 14px */
+  color: #4B0082; /* Velvet Indigo */
+}
+
+.phone i {
+  margin-right: 6px;
+  color: #4B0082;
+  font-size: 18px; /* icon puțin mai mare */
+}
+
+.phone a {
+  color: #4B0082;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.phone a:hover {
+  color: #6d2b9c;
+  text-decoration: underline;
+  transform: scale(1.05);
+}

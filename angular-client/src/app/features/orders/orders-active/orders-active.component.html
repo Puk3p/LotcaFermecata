@@ -1,0 +1,7 @@
+<div class="orders-active-page">
+  <h2>Comenzi Active</h2>
+
+  <app-order-list [orders]="activeOrders"></app-order-list>
+
+  <p *ngIf="activeOrders.length === 0">Nu există comenzi active în acest moment.</p>
+</div>

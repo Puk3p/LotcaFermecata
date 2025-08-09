@@ -1,4 +1,5 @@
 <div class="order-section">
+  <!-- Titlu în funcție de rol -->
   <h2 *ngIf="currentRole === 'BAR'">
     <i class="fas fa-paper-plane"></i> Comenzile trimise către bucătărie
   </h2>
@@ -6,11 +7,13 @@
     <i class="fas fa-utensils"></i> Comenzi de preparat
   </h2>
 
+  <!-- Mesaj dacă nu există comenzi -->
   <div *ngIf="orders.length === 0" class="no-orders">
     <i class="fas fa-inbox"></i>
     <p>Nu există comenzi de afișat.</p>
   </div>
 
+  <!-- Lista de comenzi -->
   <div class="order-grid">
     <div *ngFor="let order of orders" class="order-card">
       <div class="order-top">
@@ -21,30 +24,39 @@
           </p>
         </div>
         <p class="phone">
-          <i class="fas fa-phone-alt"></i> {{ order.clientPhone }}
+          <i class="fas fa-phone-alt"></i> 
+          <a [href]="'tel:' + formatPhone(order.clientPhone)">
+            {{ formatPhone(order.clientPhone) }}
+          </a>
         </p>
+
       </div>
 
+      <!-- Status comandă -->
       <div class="order-status"
-          [ngClass]="{
-            'waiting': order.status === 'Pending',
-            'cooking': order.status === 'InProgress',
-            'done': order.status === 'Done',
-            'cancelled': order.status === 'Cancelled'
-          }">
+        [ngClass]="{
+          'waiting': order.status === 'Pending',
+          'cooking': order.status === 'InProgress',
+          'done': order.status === 'Done',
+          'cancelled': order.status === 'Cancelled'
+        }">
         <i class="fas fa-info-circle"></i> {{ statusLabels[order.status] || order.status }}
       </div>
 
-
-
+      <!-- Produse -->
       <ul class="item-list">
         <li *ngFor="let item of order.items">
           <i class="fas fa-concierge-bell"></i> {{ item.productName }} × {{ item.quantity }}
         </li>
       </ul>
 
+      <!-- Link Detalii -->
       <div class="details-footer">
-        <a [routerLink]="['/orders', order.id]" class="details-link">
+        <a
+          [routerLink]="['/orders/view', order.id]"
+          [queryParams]="{ tab: tab }"
+          class="details-link"
+        >
           <i class="fas fa-eye"></i> Detalii
         </a>
       </div>

@@ -5,10 +5,12 @@ import { OrderListComponent } from './order-list/order-list.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { OrderCreateComponent } from './order-create/order-create.component';
 
+// orders-routing.module.ts
 const routes: Routes = [
-  { path: '', component: OrdersComponent }, // <<<<< asta e ce trebuie
-  { path: 'new', component: OrderCreateComponent },
-  { path: ':id', component: OrderDetailsComponent }
+  { path: 'new', component: OrderCreateComponent },                 // mai specific
+  { path: 'view/:id', component: OrderDetailsComponent },           // mutăm detaliile pe /orders/view/:id ca să nu bată cu :tab
+  { path: '', component: OrdersComponent },                         // /orders
+  { path: ':tab', component: OrdersComponent },                     // /orders/active etc.
 ];
 
 @NgModule({

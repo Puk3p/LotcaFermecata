@@ -276,6 +276,37 @@ namespace SP25.Domain.Migrations
                     b.ToTable("OrderItems");
                 });
 
+            modelBuilder.Entity("SP25.Domain.Models.PushSubscriptionEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Auth")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Endpoint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("P256dh")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PushSubscriptions");
+                });
+
             modelBuilder.Entity("SP25.Domain.Models.WorkZoneAuditLog", b =>
                 {
                     b.Property<Guid>("Id")

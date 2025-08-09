@@ -6,7 +6,10 @@
     "start": "ng serve --host=127.0.0.1",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:prod": "ng build --configuration production",
+    "serve:prod": "node server.js",
+    "start:prod": "npm run build:prod && npm run serve:prod"
   },
   "private": true,
   "dependencies": {
@@ -20,6 +23,9 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "@angular/service-worker": "^19.2.0",
+    "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5",
     "jest-editor-support": "*",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
