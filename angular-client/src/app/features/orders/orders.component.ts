@@ -15,66 +15,75 @@ type TabType = 'active' | 'completed' | 'canceled' | 'archive';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
-  selectedTab: TabType = 'active';
+  allOrders: Order[] = [];
 
   activeOrders: Order[] = [];
   completedOrders: Order[] = [];
   canceledOrders: Order[] = [];
+
+  archivedOrders: Order[] = [];
   archivedGrouped: { [date: string]: Order[] } = {};
 
-  constructor(
-    private orderService: OrderService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  selectedTab: TabType = 'active';
+
+  constructor(private orderService: OrderService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const tabParam = params['tab'];
-      const validatedTab: TabType = this.isValidTab(tabParam) ? tabParam : 'active';
+      const newTab: TabType = this.isValidTab(tabParam) ? tabParam : 'active';
 
       console.log('[ngOnInit] Parametru tab:', tabParam);
-      console.log('[ngOnInit] Tab validat:', validatedTab);
+      console.log('[ngOnInit] Tab validat:', newTab);
 
-      this.selectTab(validatedTab);
+      this.selectedTab = newTab;
+
+      this.loadOrders(newTab);
     });
   }
 
-  selectTab(tab: TabType) {
-    console.log('[selectTab] Ai apăsat pe tab:', tab);
-    this.selectedTab = tab;
-    this.loadOrders();
-  }
+  async selectTab(tab: TabType) {
+  console.log('[selectTab] Ai apăsat pe tab:', tab);
+  this.selectedTab = tab;
+  this.loadOrders(tab);
+  
+// await this.delay(50); 
+  
+  //this.loadOrders(tab);
+}
 
-  loadOrders() {
-    console.log('[loadOrders] Se încarcă comenzile pentru tab:', this.selectedTab);
+// Helper function to create a delay
+delay(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-    switch (this.selectedTab) {
-      case 'active':
-        this.orderService.getActiveOrders().subscribe(data => {
-          this.activeOrders = data;
-        });
-        break;
-      case 'completed':
-        this.orderService.getCompletedOrders().subscribe(data => {
-          this.completedOrders = data;
-        });
-        break;
-      case 'canceled':
-        this.orderService.getCancelledOrders().subscribe(data => {
-          this.canceledOrders = data;
-        });
-        break;
-      case 'archive':
-        this.orderService.getArchivedOrders().subscribe(data => {
-          this.archivedGrouped = data;
-        });
-        break;
-    }
-  }
 
-  isValidTab(tab: any): tab is TabType {
+  private isValidTab(tab: any): tab is TabType {
     return ['active', 'completed', 'canceled', 'archive'].includes(tab);
+  }
+
+  loadOrders(selectedTabOverride?: TabType) {
+    console.log('[loadOrders] Se încarcă comenzile...');
+
+    this.orderService.getGroupedOrders().subscribe(grouped => {
+      console.log('[loadOrders] Grupare primită din backend:', grouped);
+
+      this.activeOrders = grouped.active || [];
+      this.completedOrders = grouped.completed || [];
+      this.canceledOrders = grouped.canceled || [];
+      this.archivedGrouped = grouped.archivedGrouped || {};
+
+      this.archivedOrders = Object.values(this.archivedGrouped).flat();
+
+      if (selectedTabOverride) {
+        this.selectedTab = selectedTabOverride;
+
+        if (selectedTabOverride !== 'archive') {
+          this.archivedGrouped = {};
+          this.activeOrders = [];
+        }
+      }
+    });
   }
 
   getCurrentTabOrders(): Order[] {
@@ -84,6 +93,45 @@ export class OrdersComponent implements OnInit {
       case 'canceled': return this.canceledOrders;
       default: return [];
     }
+  }
+
+  groupArchivedByDay() {
+    this.archivedGrouped = {};
+    this.archivedOrders.forEach(order => {
+      const localDate = this.getLocalDay(order.placedAt);
+      if (!this.archivedGrouped[localDate]) {
+        this.archivedGrouped[localDate] = [];
+      }
+      this.archivedGrouped[localDate].push(order);
+    });
+
+    console.log('[groupArchivedByDay] Zile arhivate:', Object.keys(this.archivedGrouped));
+  }
+
+  getArchivedDates(): string[] {
+    return Object.keys(this.archivedGrouped).sort((a, b) =>
+      new Date(b).getTime() - new Date(a).getTime()
+    );
+  }
+
+  getLocalDay(date: string | Date): string {
+    const d = new Date(date);
+    const local = new Date(d.getTime() + 3 * 60 * 60 * 1000);
+    return local.toLocaleDateString('ro-RO', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  }
+
+  getLocalDateString(date: string | Date): string {
+    const d = new Date(date);
+    const local = new Date(d.getTime() + 3 * 60 * 60 * 1000);
+    return local.toLocaleDateString('ro-RO', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
   }
 
   getLocalTime(date: string | Date): string {
@@ -97,16 +145,4 @@ export class OrdersComponent implements OnInit {
       minute: '2-digit'
     });
   }
-
-  getArchivedDates(): string[] {
-    return Object.keys(this.archivedGrouped).sort((a, b) =>
-      new Date(b).getTime() - new Date(a).getTime()
-    );
-  }
-  
-  getArchivedOrdersCount(): number {
-    return Object.values(this.archivedGrouped)
-      .reduce((total, orders) => total + orders.length, 0);
-  }
-
 }

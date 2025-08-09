@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -8,46 +8,28 @@ import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, RouterModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   username = '';
   password = '';
-  selectedRole: 'BAR' | 'BUCATARIE' = 'BAR';
-
-  isLoggedIn = false;
-  showSuccessScreen = false;
+  selectedRole: 'BAR' | 'BUCATARIE' = 'BAR'; // default
 
   constructor(private auth: AuthService, private router: Router) {}
-
-  ngOnInit(): void {
-    const token = localStorage.getItem('token');
-    if (token) {
-      this.isLoggedIn = true;
-      this.showSuccessScreen = true;
-    }
-  }
 
   onLogin() {
     this.auth.login({ username: this.username, password: this.password }).subscribe({
       next: (res) => {
         this.auth.saveToken(res.token);
         localStorage.setItem('role', this.selectedRole);
-        localStorage.setItem('userId', this.username);
+        localStorage.setItem('userId', this.username); // salvăm username-ul introdus
 
-        this.isLoggedIn = true;
-        this.showSuccessScreen = true;
-
-        // setTimeout(() => this.router.navigate(['/']), 2000);
+        this.router.navigate(['/orders']);
       },
       error: () => alert('Login greșit!')
     });
-  }
-
-  goToDashboard() {
-    this.router.navigate(['/']);
   }
 }

@@ -4,7 +4,6 @@ import { LandingPageComponent } from './core/landing-page/landing-page.component
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { MainLayoutComponent } from './shared/layout/main-layout/main-layout.component';
-import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -20,7 +19,6 @@ const routes: Routes = [
       },
       {
         path: 'orders',
-        canActivate: [AuthGuard],
         loadChildren: () =>
           import('./features/orders/orders.module').then(m => m.OrdersModule)
       },

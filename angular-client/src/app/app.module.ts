@@ -10,7 +10,6 @@ import { FeaturesModule } from './features/features.module';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth.interceptor';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -24,8 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FeaturesModule,
     MatToolbarModule,
     MatButtonModule,
-    HttpClientModule,
-    BrowserAnimationsModule
+    HttpClientModule
   ],
   providers: [
     {

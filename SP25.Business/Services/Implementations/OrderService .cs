@@ -155,90 +155,45 @@ namespace SP25.Business.Services.Implementations
             return _mapper.Map<IEnumerable<OrderDto>>(list);
         }
 
-        public async Task<List<OrderDto>> GetActiveOrdersAsync()
+        public async Task<GroupedOrdersDto> GetGroupedByDateAsync()
         {
-            var romaniaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. Europe Standard Time");
-            var today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, romaniaTimeZone).Date;
+            var allOrders = await _repository.GetAllAsync();
+            var now = DateTime.UtcNow.AddHours(3);
+            var todayString = now.ToString("dd.MM.yyyy");
 
-            var allOrders = await _dbContext.Orders
-                .Include(o => o.Items)
-                .ToListAsync();
+            var grouped = new GroupedOrdersDto();
 
-            var filtered = allOrders
-                .Where(o =>
-                    TimeZoneInfo.ConvertTimeFromUtc(o.PlacedAt, romaniaTimeZone).Date == today &&
-                    (o.Status == OrderStatus.Pending || o.Status == OrderStatus.InProgress))
-                .OrderBy(o => o.PlacedAt)
-                .ToList();
+            foreach (var order in allOrders)
+            {
+                var date = order.PlacedAt.AddHours(3).ToString("dd.MM.yyyy");
 
-            return _mapper.Map<List<OrderDto>>(filtered);
-        }
+                if (date == todayString)
+                {
+                    switch (order.Status)
+                    {
+                        case OrderStatus.Pending:
+                        case OrderStatus.InProgress:
+                            grouped.Active.Add(_mapper.Map<OrderDto>(order));
+                            break;
+                        case OrderStatus.Done:
+                            grouped.Completed.Add(_mapper.Map<OrderDto>(order));
+                            break;
+                        case OrderStatus.Cancelled:
+                            grouped.Cancelled.Add(_mapper.Map<OrderDto>(order));
+                            break;
+                    }
+                }
+                else
+                {
+                    if (!grouped.ArchivedGrouped.ContainsKey(date))
+                    {
+                        grouped.ArchivedGrouped[date] = new List<OrderDto>();
+                    }
 
-        public async Task<List<OrderDto>> GetCompletedOrdersAsync()
-        {
-            var romaniaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. Europe Standard Time");
-            var today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, romaniaTimeZone).Date;
-
-            var allOrders = await _dbContext.Orders
-                .Include(o => o.Items)
-                .ToListAsync();
-
-            var filtered = allOrders
-                .Where(o =>
-                    TimeZoneInfo.ConvertTimeFromUtc(o.PlacedAt, romaniaTimeZone).Date == today &&
-                    o.Status == OrderStatus.Done)
-                .OrderBy(o => o.PlacedAt)
-                .ToList();
-
-            return _mapper.Map<List<OrderDto>>(filtered);
-        }
-
-        public async Task<List<OrderDto>> GetCancelledOrdersAsync()
-        {
-            var romaniaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. Europe Standard Time");
-            var today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, romaniaTimeZone).Date;
-
-            var allOrders = await _dbContext.Orders
-                .Include(o => o.Items)
-                .ToListAsync();
-
-            var filtered = allOrders
-                .Where(o =>
-                    TimeZoneInfo.ConvertTimeFromUtc(o.PlacedAt, romaniaTimeZone).Date == today &&
-                    o.Status == OrderStatus.Cancelled)
-                .OrderBy(o => o.PlacedAt)
-                .ToList();
-
-            return _mapper.Map<List<OrderDto>>(filtered);
-        }
-
-        public async Task<Dictionary<string, List<OrderDto>>> GetArchivedGroupedAsync()
-        {
-            // 1. Fusul orar România
-            var romaniaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. Europe Standard Time");
-
-            // 2. Ziua curentă în România (la nivel de dată, fără oră)
-            var today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, romaniaTimeZone).Date;
-
-            // 3. Obține toate comenzile în memorie (client-side), apoi filtrează după dată
-            var allOrders = await _dbContext.Orders
-                .Include(o => o.Items)
-                .ToListAsync(); // => executat pe SQL Server, deci fără TimeZone conversion aici
-
-            // 4. Filtrare și grupare locală
-            var grouped = allOrders
-                .Where(o => TimeZoneInfo.ConvertTimeFromUtc(o.PlacedAt, romaniaTimeZone).Date < today)
-                .GroupBy(o => TimeZoneInfo.ConvertTimeFromUtc(o.PlacedAt, romaniaTimeZone).ToString("dd.MM.yyyy"))
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Select(o => _mapper.Map<OrderDto>(o)).ToList()
-                );
-
+                    grouped.ArchivedGrouped[date].Add(_mapper.Map<OrderDto>(order));
+                }
+            }
             return grouped;
         }
-
-
-
-
     }
 }

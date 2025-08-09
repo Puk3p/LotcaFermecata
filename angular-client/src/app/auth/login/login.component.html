@@ -1,7 +1,7 @@
 <div class="login-container">
-  <form *ngIf="!showSuccessScreen" class="login-form" (ngSubmit)="onLogin()">
-    <input type="text" [(ngModel)]="username" name="username" placeholder="Username" required />
-    <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required />
+  <form class="login-form" (ngSubmit)="onLogin()">
+    <input type="text" [(ngModel)]="username" name="username" placeholder="Username" required>
+    <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required>
 
     <label for="role">Rol:</label>
     <select [(ngModel)]="selectedRole" name="role" required>
@@ -12,14 +12,4 @@
     <button type="submit">Login</button>
     <a routerLink="/auth/register">Nu ai cont? Creează unul</a>
   </form>
-
-  <div *ngIf="showSuccessScreen" class="login-success">
-    <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="48" stroke="#4B0082" stroke-width="4" fill="#E5E4E2"/>
-      <path d="M30 52 L45 65 L70 35" stroke="#4B0082" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <h2>Ești autentificat</h2>
-    <p>Ai fost autentificat cu succes</p>
-    <button class="success-btn" (click)="goToDashboard()">Continuă</button>
-  </div>
 </div>

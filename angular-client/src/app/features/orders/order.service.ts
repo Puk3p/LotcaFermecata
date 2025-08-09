@@ -45,22 +45,4 @@ export class OrderService {
   getGroupedOrders() : Observable<GroupedOrdersDto> {
     return this.http.get<GroupedOrdersDto>(`${this.apiUrl}/grouped-by-date`);
   }
-
-  getActiveOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.apiUrl}/active`);
-  }
-
-  getCompletedOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.apiUrl}/completed`);
-  }
-
-  getCancelledOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.apiUrl}/cancelled`);
-  }
-
-  getArchivedOrders(): Observable<{ [key: string]: Order[] }> {
-    return this.http.get<{ [key: string]: Order[] }>(`${this.apiUrl}/archived`);
-  }
-
-
 }
