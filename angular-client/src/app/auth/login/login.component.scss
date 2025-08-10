@@ -154,3 +154,135 @@
 .login-success .success-btn:hover {
   background-color: #6a0dad;
 }
+
+/* === PATCH: stil login ca model (lipit LA FINAL) ======================= */
+.login-container {
+  /* dark gradient + glow ca pe dashboard */
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(180deg, #0b0b12 0%, #09090d 100%);
+  min-height: calc(100svh - 64px);
+  font-family: 'Josefin Sans', 'Segoe UI', sans-serif;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 60svh;
+    z-index: -1;
+    pointer-events: none;
+    filter: blur(30px);
+    border-radius: 32px;
+  }
+  &::before {
+    background:
+      radial-gradient(closest-side, rgba(75,0,130,0.35), transparent 70%) 10% 0/60% 100% no-repeat,
+      radial-gradient(closest-side, rgba(229,228,226,0.18), transparent 70%) 110% 20%/55% 90% no-repeat;
+  }
+  &::after {
+    inset: auto -10% -20% -10%;
+    height: 40svh;
+    background:
+      radial-gradient(closest-side, rgba(75,0,130,0.25), transparent 70%) 0% 100%/60% 100% no-repeat;
+  }
+}
+
+/* card-ul devine "glass", text Platinum Frost */
+.login-form {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #E5E4E2;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  border-radius: 18px;
+  padding: 2rem;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+
+  &:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.2); }
+}
+
+/* label subtil, ușor mai clar */
+.login-form label { color: #deddde; opacity: .9; }
+
+/* inputs/select pe dark-glass + focus accent velvet */
+.login-form input,
+.login-form select {
+  background: rgba(255,255,255,0.08);
+  color: #E5E4E2;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: inset 0 0 0 9999px rgba(255,255,255,0.0); /* pentru safari */
+}
+
+.login-form input::placeholder { color: rgba(229,228,226,.75); }
+
+.login-form input:focus,
+.login-form select:focus {
+  outline: none;
+  border-color: rgba(75,0,130,.55);
+  box-shadow: 0 0 0 3px rgba(75,0,130,.35);
+}
+
+/* buton = accent Velvet Indigo cu glow */
+.login-form button[type="submit"] {
+  background: linear-gradient(90deg, #4B0082, #6a0dad);
+  color: #E5E4E2;
+  border: 0;
+  font-weight: 700;
+  letter-spacing: .2px;
+  box-shadow: 0 8px 20px rgba(75,0,130,.35);
+  transform: translateZ(0);
+}
+.login-form button[type="submit"]:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(75,0,130,.45);
+}
+.login-form button[type="submit"]:active { transform: translateY(0); }
+
+/* link registrare pe glass */
+.login-form a {
+  color: #E5E4E2;
+  opacity: .9;
+}
+.login-form a:hover { color: #ffffff; text-decoration: underline; }
+
+/* ecranul de succes pe același glass */
+.login-success {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  color: #E5E4E2;
+
+  h2 { color: #E5E4E2; }
+  p { color: rgba(229,228,226,.9); }
+  svg circle { fill: rgba(229,228,226,.12); stroke: #4B0082; }
+  svg path { stroke: #E5E4E2; } /* bifa să fie deschisă pe dark */
+}
+
+.login-success .success-btn {
+  background: linear-gradient(90deg, #4B0082, #6a0dad);
+  color: #E5E4E2;
+  box-shadow: 0 8px 20px rgba(75,0,130,.35);
+}
+.login-success .success-btn:hover { filter: brightness(1.05); }
+
+/* Focus accesibil pentru tastatură (gen Tab) */
+:where(.login-form a, .login-form button, .login-form input, .login-form select):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(75,0,130,.45);
+  border-color: rgba(75,0,130,.55);
+}
+
+/* Motion-reduce: taie animațiile grele */
+@media (prefers-reduced-motion: reduce) {
+  .login-container::before,
+  .login-container::after { filter: blur(18px); }
+  * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+}
+
+/* Mobile tweak: mai puțin blur pentru performanță */
+@media (max-width: 480px) {
+  .login-form { backdrop-filter: blur(6px); }
+}

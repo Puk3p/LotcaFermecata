@@ -5,21 +5,22 @@ html, body {
   font-family: 'Josefin Sans', sans-serif;
   overflow-x: hidden;
 }
+
 .sidenav-container {
   height: 100vh;
   width: 100%;
   background-color: #E5E4E2; /* Platinum Frost */
-  overflow-x: hidden; /* ADĂUGAT - extra asigurare */
+  overflow-x: hidden;
 }
 
 .layout {
   display: flex;
   height: 100vh;
-  overflow-x: hidden; /* ADĂUGAT */
+  overflow-x: hidden;
 }
 
 mat-sidenav-content {
-  overflow-x: hidden; /* asigură că nu se forțează scroll orizontal */
+  overflow-x: hidden;
 }
 
 mat-sidenav-container,
@@ -29,15 +30,32 @@ mat-sidenav-content,
 .content {
   overflow-x: hidden !important;
   max-width: 100% !important;
-
   padding: 0;
   margin: 0;
+}
+
+/* === DASHBOARD FULL GRADIENT === */
+mat-sidenav-content.on-dashboard,
+.content.on-dashboard {
+  background: transparent !important;
+}
+
+mat-sidenav-content.on-dashboard::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(124,92,255,0.25), transparent 60%),
+    radial-gradient(900px 600px at 110% 10%, rgba(255,107,154,0.2), transparent 60%),
+    linear-gradient(180deg, #0b0b12 0%, #09090d 100%);
 }
 
 /* SIDEBAR */
 .sidenav {
   width: 250px;
-  max-width: 100vw; /* ADĂUGAT - previne ieșirea în afara ecranului */
+  max-width: 100vw;
   background: linear-gradient(180deg, #4B0082 0%, #360065 100%);
   color: white;
   display: flex;
@@ -53,7 +71,6 @@ mat-sidenav-content,
   overflow-x: hidden !important;
   max-width: 100% !important;
 }
-
 
 /* Logo + Brand */
 .sidebar-header {
@@ -110,14 +127,11 @@ mat-sidenav-content,
   border-radius: 8px;
   text-decoration: none;
   transition: background 0.3s, padding-left 0.2s;
-
-  /* ADĂUGAT - previne ieșirea în lateral */
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 
 .mat-nav-list a:hover,
 .mat-nav-list a.active-link {
@@ -128,7 +142,6 @@ mat-sidenav-content,
 .mat-nav-list a .text {
   color: #E5E4E2 !important;
 }
-
 
 /* Icon */
 .nav-icon {
@@ -149,6 +162,37 @@ mat-toolbar {
   display: flex;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+}
+
+.topbar.on-dark {
+  background: transparent;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+/* Toolbar pe fundal închis (dashboard) */
+.mat-toolbar.on-dark {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: transparent;
+  backdrop-filter: blur(4px);
+  color: #e9e9ef;
+}
+
+/* Ripple vizibil pe închis (opțional) */
+.mat-toolbar.on-dark .hamburger-button .mdc-icon-button__ripple,
+.mat-toolbar.on-dark .hamburger-button .mat-mdc-button-ripple {
+  --mat-mdc-button-persistent-ripple-color: rgba(255,255,255,.25);
+  --mat-mdc-button-ripple-color: rgba(255,255,255,.3);
+}
+
+.mat-toolbar.on-dark .hamburger-button,
+.mat-toolbar.on-dark .hamburger-button i,
+.mat-toolbar.on-dark .hamburger-button .fas {
+  color: #ffffff !important;
+  opacity: 1 !important;
 }
 
 .spacer {
@@ -159,33 +203,7 @@ mat-toolbar {
 .hamburger-button {
   color: #4B0082;
   margin-right: 1rem;
-}
-
-/* Main Content */
-.content {
-  padding: 2rem;
-  background-color: #E5E4E2;
-  min-height: calc(100vh - 64px); /* scazi topbar */
-  overflow-x: hidden; /* ADĂUGAT */
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .sidenav {
-    width: 220px;
-  }
-  .sidebar-header .brand {
-    font-size: 1.2rem;
-  }
-  .mat-nav-list a {
-    font-size: 0.9rem;
-  }
-}
-
-.hamburger-button {
-  color: #4B0082;
   font-size: 1.4rem;
-  margin-right: 1rem;
 }
 
 .profile-wrapper {
@@ -233,4 +251,264 @@ mat-toolbar {
 
 .profile-dropdown button:hover {
   background-color: #360065;
+}
+
+/* Main Content */
+.content {
+  padding: 2rem;
+  background-color: #E5E4E2;
+  min-height: calc(100vh - 64px);
+  overflow-x: hidden;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .sidenav {
+    width: 220px;
+  }
+  .sidebar-header .brand {
+    font-size: 1.2rem;
+  }
+  .mat-nav-list a {
+    font-size: 0.9rem;
+  }
+}
+
+
+/* ... păstrezi TOT ce aveai deja ... */
+
+/* === FULL SCREEN pentru rutele de auth === */
+mat-sidenav-content.full-bleed,
+.content.full-bleed {
+  background: transparent !important;
+}
+
+mat-sidenav-content.full-bleed::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(124,92,255,0.25), transparent 60%),
+    radial-gradient(900px 600px at 110% 10%, rgba(255,107,154,0.2), transparent 60%),
+    linear-gradient(180deg, #0b0b12 0%, #09090d 100%);
+}
+
+.content.full-bleed {
+  padding: 0;
+  min-height: calc(100svh - 64px);
+  overflow: visible;
+}
+
+/* topbar pe auth/dashboard */
+.topbar.on-dark {
+  background: transparent !important;
+  backdrop-filter: blur(6px);
+  color: #e9e9ef;
+}
+
+
+/* === PATCH: Sidebar în stilul dashboard (glass + velvet) ================= */
+
+/* panou „glass” + border subtil + shadow */
+.sidenav {
+  background:
+    linear-gradient(180deg, rgba(75,0,130,0.85) 0%, rgba(54,0,101,0.85) 100%),
+    radial-gradient(120% 60% at 0% -20%, rgba(229,228,226,0.10), transparent 60%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-right: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 8px 0 24px rgba(0,0,0,0.35);
+}
+
+/* header: mic glow pe logo + titlu mai clar */
+.sidebar-header .logo {
+  box-shadow: 0 0 0 3px rgba(229,228,226,0.12), 0 10px 24px rgba(0,0,0,0.35);
+}
+.sidebar-header .brand {
+  color: #E5E4E2;
+  letter-spacing: .8px;
+  text-shadow: 0 1px 0 rgba(0,0,0,.25);
+}
+
+/* titlurile de secțiune mai lizibile pe dark-glass */
+.nav-title {
+  color: rgba(229,228,226,.75);
+  letter-spacing: .8px;
+}
+
+/* link-urile: stil „pill”, indicator de activ pe stânga, hover fin */
+.mat-nav-list a {
+  position: relative;
+  border-radius: 12px;
+  padding: .6rem 1rem .6rem 1.1rem;
+  color: #E5E4E2;
+  background: transparent;
+  transition: background .2s ease, padding-left .15s ease, color .15s ease, box-shadow .2s ease;
+}
+
+.mat-nav-list a::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 2px;
+  background: transparent;
+  transition: background .2s ease, left .15s ease, box-shadow .2s ease;
+}
+
+/* hover */
+.mat-nav-list a:hover {
+  background: rgba(255,255,255,0.10);
+  padding-left: 1.3rem;
+}
+
+/* activ */
+.mat-nav-list a.active-link {
+  background: rgba(255,255,255,0.14);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10);
+}
+.mat-nav-list a.active-link::before {
+  left: -8px;
+  background: linear-gradient(180deg, #E5E4E2 0%, rgba(229,228,226,.65) 100%);
+  box-shadow: 0 0 12px rgba(229,228,226,.45);
+}
+
+/* iconuri: ușor mai mari + opacitate pe hover/active */
+.nav-icon {
+  font-size: 1.15rem;
+  opacity: .9;
+  width: 1.25rem;
+  text-align: center;
+}
+.mat-nav-list a:hover .nav-icon,
+.mat-nav-list a.active-link .nav-icon {
+  opacity: 1;
+}
+
+/* micro-separator între secțiuni (nu schimb markup-ul) */
+.nav-section + .nav-section {
+  position: relative;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+.nav-section + .nav-section::before {
+  content: "";
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+}
+
+/* scrollbar discret în drawer */
+.sidenav::-webkit-scrollbar { width: 8px; }
+.sidenav::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.18);
+  border-radius: 8px;
+}
+.sidenav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* link text forțat să rămână deschis pe velvet */
+.mat-nav-list a .text { color: #E5E4E2 !important; }
+
+/* pe ecrane mici, crește opacitatea fundalului pt. contrast */
+@media (max-width: 768px) {
+  .sidenav {
+    background:
+      linear-gradient(180deg, rgba(75,0,130,0.93) 0%, rgba(54,0,101,0.93) 100%),
+      radial-gradient(120% 60% at 0% -20%, rgba(229,228,226,0.10), transparent 60%);
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* focus accesibil (Tab) pe item-urile de nav */
+:where(.mat-nav-list a):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(229,228,226,.35);
+}
+
+/* ripple să fie vizibil pe închis */
+:host ::ng-deep .mat-list-item .mat-ripple-element {
+  background-color: rgba(255,255,255,.18) !important;
+}
+
+/* === FULL SCREEN pentru pagina Orders === */
+mat-sidenav-content.on-orders,
+.content.on-orders {
+  background: transparent !important;
+}
+
+mat-sidenav-content.on-orders::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(124,92,255,0.25), transparent 60%),
+    radial-gradient(900px 600px at 110% 10%, rgba(255,107,154,0.2), transparent 60%),
+    linear-gradient(180deg, #0b0b12 0%, #09090d 100%);
+}
+
+.content.on-orders {
+  padding: clamp(16px, 2vw, 28px);
+  min-height: calc(100svh - 64px);
+}
+
+.topbar.on-dark {
+  background: transparent !important;
+  backdrop-filter: blur(6px);
+  color: #e9e9ef;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 60px; /* în funcție de înălțimea topbar-ului */
+  right: 20px;
+  background: #E5E4E2;
+  color: #333;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  font-family: 'Josefin Sans', sans-serif;
+  min-width: 220px;
+  z-index: 1000;
+}
+
+.profile-dropdown p {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+
+.profile-dropdown strong {
+  color: #4B0082;
+}
+
+.profile-dropdown button {
+  background: linear-gradient(135deg, #4B0082, #360060);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  justify-content: center;
+  transition: background-color 0.25s ease, transform 0.15s ease;
+}
+
+.profile-dropdown button:hover {
+  background: linear-gradient(135deg, #360060, #4B0082);
+  transform: translateY(-2px);
 }

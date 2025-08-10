@@ -89,3 +89,121 @@
     padding: 0.6rem;
   }
 }
+
+/* === PATCH: aliniere cu tema Login/Dashboard (dark + glass) ============ */
+
+/* full-bleed sub topbar; gradient ca pe dashboard */
+.login-container {
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100svh - 64px);
+  background: linear-gradient(180deg, #0b0b12 0%, #09090d 100%);
+  color: #E5E4E2;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 60svh;
+    z-index: -1;
+    pointer-events: none;
+    filter: blur(30px);
+    border-radius: 32px;
+  }
+  &::before {
+    background:
+      radial-gradient(closest-side, rgba(75,0,130,0.35), transparent 70%) 10% 0/60% 100% no-repeat,
+      radial-gradient(closest-side, rgba(229,228,226,0.18), transparent 70%) 110% 20%/55% 90% no-repeat;
+  }
+  &::after {
+    inset: auto -10% -20% -10%;
+    height: 40svh;
+    background:
+      radial-gradient(closest-side, rgba(75,0,130,0.25), transparent 70%) 0% 100%/60% 100% no-repeat;
+  }
+}
+
+/* card „glass” ca la login */
+.login-form {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  color: #E5E4E2;
+  border-radius: 18px;
+  max-width: 400px;
+  width: 100%;
+  padding: 2rem;
+  gap: 1.25rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  transition: transform .2s ease, border-color .2s ease;
+
+  &:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.2); }
+}
+
+.form-title {
+  margin: 0 0 .25rem 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+/* inputs pe dark + focus accent */
+.login-form input {
+  background: rgba(255,255,255,0.08);
+  color: #E5E4E2;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+}
+.login-form input::placeholder { color: rgba(229,228,226,.75); }
+.login-form input:focus {
+  outline: none;
+  border-color: rgba(75,0,130,.55);
+  box-shadow: 0 0 0 3px rgba(75,0,130,.35);
+}
+
+/* buton gradient Velvet Indigo + glow */
+.login-form button {
+  padding: 0.8rem 1rem;
+  border: 0;
+  border-radius: 10px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  color: #E5E4E2;
+  background: linear-gradient(90deg, #4B0082, #6a0dad);
+  box-shadow: 0 8px 20px rgba(75,0,130,.35);
+  transition: filter .2s ease, transform .15s ease, box-shadow .2s ease;
+}
+.login-form button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.login-form button:active { transform: translateY(0); }
+
+/* link */
+.login-form a {
+  color: #E5E4E2;
+  text-align: center;
+  text-decoration: none;
+  opacity: .9;
+  transition: opacity .2s ease, text-decoration-color .2s ease;
+}
+.login-form a:hover { opacity: 1; text-decoration: underline; }
+
+/* focus accesibil pe tastatură */
+:where(.login-form a, .login-form button, .login-form input):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(75,0,130,.45);
+  border-color: rgba(75,0,130,.55);
+}
+
+/* mobile: mai puțin blur pt. performanță */
+@media (max-width: 480px) {
+  .login-form { backdrop-filter: blur(6px); padding: 1.5rem; gap: 1rem; }
+}
+
+/* respects reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .login-container::before,
+  .login-container::after { filter: blur(18px); }
+  * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+}

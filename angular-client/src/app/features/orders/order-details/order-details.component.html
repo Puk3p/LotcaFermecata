@@ -1,9 +1,9 @@
 <div class="content" *ngIf="order">
   <div class="header-row">
     <button class="back-btn" (click)="goBack()">
-      <i class="fas fa-arrow-left"></i> Back
+      <i class="fas fa-arrow-left"></i> Înapoi
     </button>
-    <h2><i class="fas fa-receipt"></i> Order Details</h2>
+    <h2><i class="fas fa-receipt"></i> Detalii Comenzi</h2>
 
     <!-- Buton editare (vizibil doar când nu editezi) -->
     <button *ngIf="canEdit && !isEditing" (click)="isEditing = true" class="edit-btn">
@@ -21,8 +21,8 @@
   <div *ngIf="!isEditing">
     <p><i class="fas fa-hashtag"></i> <strong>ID:</strong> {{ order.id }}</p>
     <p><i class="fas fa-user"></i> <strong>Client:</strong> {{ order.clientName }} ({{ order.clientPhone }})</p>
-    <p><i class="fas fa-map-marker-alt"></i> <strong>Zone:</strong> {{ order.targetZone }}</p>
-    <p><i class="fas fa-clock"></i> <strong>Placed At:</strong> {{ getLocalTime(order.placedAt) }}</p>
+    <p><i class="fas fa-map-marker-alt"></i> <strong>Zonă:</strong> {{ order.targetZone }}</p>
+    <p><i class="fas fa-clock"></i> <strong>Plasată la:</strong> {{ getLocalTime(order.placedAt) }}</p>
   </div>
 
   <!-- EDITARE CLIENT -->

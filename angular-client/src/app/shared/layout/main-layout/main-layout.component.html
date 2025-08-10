@@ -36,7 +36,7 @@
       <p class="nav-title">Restaurant</p>
       <mat-nav-list>
         <a mat-list-item routerLink="/orders" routerLinkActive="active-link">
-          <i class="fas fa-utensils nav-icon"></i> Orders
+          <i class="fas fa-utensils nav-icon"></i> Comenzi
         </a>
       </mat-nav-list>
       <mat-nav-list>
@@ -48,19 +48,21 @@
   </mat-sidenav>
 
   <!-- CONTENT -->
-  <mat-sidenav-content>
-    <mat-toolbar color="primary" class="topbar">
-      <!-- Hamburger button for mobile -->
-      <button
-        mat-icon-button
-        (click)="drawer.toggle()"
-        class="hamburger-button"
-      >
+  <mat-sidenav-content
+    [class.on-dashboard]="(isOnDashboard$ | async)"
+    [class.full-bleed]="(isAuthRoute$ | async)"
+    [class.on-orders]="(isOrdersPage$ | async)"
+  >
+    <!-- main-layout.component.html -->
+    <mat-toolbar
+      class="topbar"
+      [class.on-dark]="(isOnDashboard$ | async) || (isAuthRoute$ | async) || (isOrdersPage$ | async)"
+    >
+
+      <button mat-icon-button class="hamburger-button" (click)="drawer.toggle()">
         <i class="fas fa-bars"></i>
       </button>
-
-
-
+      
       <span class="spacer"></span>
 
       <div class="profile-wrapper" (clickOutside)="showDropdown = false" clickOutside>
@@ -77,12 +79,14 @@
           </button>
         </div>
       </div>
-
-
-
     </mat-toolbar>
 
-    <div class="content">
+    <div
+      class="content"
+      [class.on-dashboard]="(isOnDashboard$ | async)"
+      [class.full-bleed]="(isAuthRoute$ | async)"
+      [class.on-orders]="(isOrdersPage$ | async)"
+    >
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>

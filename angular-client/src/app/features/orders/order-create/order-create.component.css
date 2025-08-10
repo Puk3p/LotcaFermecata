@@ -213,3 +213,126 @@ h2, h3 {
   transform: translateY(-2px);
   background: linear-gradient(135deg, #360060, #4B0082);
 }
+
+
+/* === PATCH: Order Create în tema Velvet Indigo + glass ================== */
+
+/* containerul devine glass și mai îngust */
+.order-form-container {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #E5E4E2;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  max-width: clamp(340px, 92vw, 800px); /* poți coborî la 720 dacă vrei */
+}
+
+/* titluri */
+h2, h3 {
+  color: #E5E4E2 !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,.3);
+}
+
+/* inputs pe dark */
+.form-group input {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #E5E4E2;
+}
+.form-group input:focus {
+  border-color: rgba(75,0,130,.55);
+  box-shadow: 0 0 0 3px rgba(75,0,130,.35);
+}
+
+/* tabs categorie – „pills” indigo */
+.category-tabs button {
+  background: rgba(255,255,255,0.08);
+  color: #E5E4E2;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 999px;
+  padding: 8px 14px;
+  transition: transform .15s ease, border-color .2s ease, background .2s ease;
+}
+.category-tabs button:hover { transform: translateY(-1px); border-color: rgba(255,255,255,0.24); }
+.category-tabs button.active {
+  background: linear-gradient(90deg, #4B0082, #6a0dad);
+  border-color: transparent;
+  box-shadow: 0 8px 20px rgba(75,0,130,.35);
+  color: #E5E4E2;
+}
+
+/* grila produse */
+.menu-items { gap: 16px; }
+.menu-item {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: #E5E4E2 !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,.25);
+}
+.menu-item span { color: #E5E4E2; }
+
+/* butoane produs și submit */
+.menu-item button,
+.submit-button {
+  background: linear-gradient(90deg, #4B0082, #6a0dad) !important;
+  color: #E5E4E2 !important;
+  border: 0 !important;
+  box-shadow: 0 8px 20px rgba(75,0,130,.35) !important;
+  transition: filter .2s ease, transform .15s ease;
+}
+.menu-item button:hover,
+.submit-button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+/* coșul */
+.cart-section {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: #E5E4E2;
+}
+.cart-section li {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: #E5E4E2;
+}
+
+/* iconițe colorate subtile */
+h2 i, h3 i              { color: #B39DDB; }
+.form-group label i     { color: #ffd54f; }
+.category-icon          { color: #c8b6ff; }
+.cart-section .fa-times { color: #ff8080; }
+
+/* focus accesibil */
+:where(button, a, input):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(75,0,130,.45);
+}
+
+/* mobile: reduce blur pentru performanță */
+@media (max-width: 520px) {
+  .order-form-container { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+}
+
+/* Patch contrast text și etichete */
+
+/* Etichetele form-ului */
+.form-group label {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+
+/* Text în inputuri */
+.form-group input {
+  color: #ffffff !important;
+}
+
+/* Placeholder mai vizibil */
+.form-group input::placeholder {
+  color: rgba(255,255,255,0.75);
+}
+
+/* Total în coș – clar și evidențiat */
+.total-price {
+  color: #ffd54f !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}

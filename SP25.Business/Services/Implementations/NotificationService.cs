@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SP25.Business.ModelDTOs;
 using SP25.Business.Services.Contracts;
+using SP25.Domain.Context;
 using SP25.Domain.Models;
 using SP25.Domain.Repository;
 using System;
@@ -18,15 +20,18 @@ namespace SP25.Business.Services.Implementations
         private readonly IRepository<PushSubscriptionEntity> _repo;
         private readonly IConfiguration _cfg;
         private readonly ILogger<NotificationService> _logger;
+        private readonly MyDbContext _dbContext;
 
         public NotificationService(
             IRepository<PushSubscriptionEntity> repo,
             IConfiguration cfg,
-            ILogger<NotificationService> logger)
+            ILogger<NotificationService> logger,
+            MyDbContext dbContext)
         {
             _repo = repo;
             _cfg = cfg;
             _logger = logger;
+            _dbContext = dbContext;
         }
 
         public async Task SubscribeAsync(PushSubscribeDto dto)
@@ -102,13 +107,41 @@ namespace SP25.Business.Services.Implementations
             var client = new WebPushClient();
             var vapid = new VapidDetails(vapidSubject, vapidPublic, vapidPrivate);
 
+
+            string ? clientName = null;
+            if (Guid.TryParse(orderId, out var oid))
+            {
+                var order = await _dbContext.Orders
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(o => o.Id == oid);
+
+                clientName = order?.ClientName;
+            }
+
+            var title = !string.IsNullOrWhiteSpace(clientName)
+                ? $"Comanda lui {clientName}"
+                : $"Comanda #{orderId}";
+
             var payload = System.Text.Json.JsonSerializer.Serialize(new
             {
-                title = $"Comanda #{orderId}",
-                body = $"Status: {newStatus}",
+                title,
+                body = $"Vino la bucătărie. Te rugăm să o preiei 📦",
                 icon = "/assets/icons/icon-192x192.png",
                 badge = "/assets/icons/badge-72x72.png",
-                data = new { url = "/orders/active" }
+                image = "/assets/hero/order-done.png",
+                tag = $"order-{orderId}",
+                renotify = true,
+                requireInteraction = true,
+                actions = new[]
+                {
+                    new { action = "open", title = "Deschide" },
+                    new { action = "ack", title = "Am preluat" }
+                },
+                data = new
+                {
+                    url = $"/orders/view/{orderId}?tab=active",
+                    orderId
+                }
             });
 
             foreach (var t in targets.ToList())

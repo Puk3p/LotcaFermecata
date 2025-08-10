@@ -13,7 +13,6 @@ import { PushService } from '../../core/push.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-
 export class LoginComponent implements OnInit {
   username = '';
   password = '';
@@ -22,13 +21,22 @@ export class LoginComponent implements OnInit {
   isLoggedIn = false;
   showSuccessScreen = false;
 
-  constructor(private auth: AuthService, private router: Router, private push: PushService) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private push: PushService
+  ) {}
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
     if (token) {
       this.isLoggedIn = true;
       this.showSuccessScreen = true;
+
+      // 🔧 user e deja logat (refresh): resincronizează subscripția existentă
+      const userId = localStorage.getItem('userId') || 'anon';
+      const role = (localStorage.getItem('role') as 'BAR'|'BUCATARIE') || 'BAR';
+      this.push.resyncPush(userId, role); // non-blocking, fără prompt
     }
   }
 
@@ -39,10 +47,9 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('role', this.selectedRole);
         localStorage.setItem('userId', this.username);
 
-        setTimeout(() => {
-          this.push.init(this.selectedRole, this.username)
-            .catch(err => console.warn('[Push] init after login failed', err));
-        }, 0);
+        // ✅ după login cerem permisiunea și facem subscribe
+        this.push.init(this.selectedRole, this.username)
+          .catch(err => console.warn('[Push] init after login failed', err));
 
         this.router.navigate(['/']);
       },

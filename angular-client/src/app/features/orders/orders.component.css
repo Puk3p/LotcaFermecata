@@ -60,3 +60,129 @@
     padding: 0.5rem;
   }
 }
+
+
+/* === THEME PATCH: Orders în stil dashboard (glass + Velvet Indigo) ===== */
+
+/* container */
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(16px, 2vw, 28px);
+  color: #E5E4E2;
+}
+
+.dashboard > h2 {
+  margin: 0 0 12px 0;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: #E5E4E2;
+}
+
+/* tabs ca "cards" glass */
+.dashboard-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 10px 0 18px 0;
+}
+
+.tab-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 12px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #E5E4E2;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+}
+
+.tab-card h3 {
+  margin: 2px 0 2px 0;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+.tab-card p {
+  margin: 0;
+  opacity: .9;
+  font-size: .9rem;
+}
+
+/* hover */
+.tab-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* activ = accent indigo + ușor glow */
+.tab-card.active {
+  background: linear-gradient(90deg, #4B0082, #6a0dad);
+  border-color: transparent;
+  box-shadow: 0 12px 30px rgba(75,0,130,.45);
+}
+
+/* focus accesibil pentru tastatură */
+.tab-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(75,0,130,.45), 0 12px 30px rgba(75,0,130,.35);
+  border-color: rgba(75,0,130,.55);
+}
+
+/* lista + arhiva */
+.orders-list {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 12px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+}
+
+.archive-day {
+  border-top: 1px solid rgba(255,255,255,0.12);
+  margin-top: 16px;
+  padding-top: 10px;
+}
+
+.archive-day h4 {
+  margin: 0 0 8px 4px;
+  font-weight: 800;
+  color: #E5E4E2;
+  letter-spacing: .2px;
+}
+
+/* butonul extern „Comandă nouă” dacă îl folosești */
+.new-order-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #4B0082, #6a0dad);
+  color: #E5E4E2;
+  padding: .6rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: .2px;
+  box-shadow: 0 8px 20px rgba(75,0,130,.35);
+  transition: transform .15s ease, filter .2s ease;
+}
+.new-order-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+
+/* responsive */
+@media (max-width: 1024px) {
+  .dashboard-tabs { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+}
+@media (max-width: 520px) {
+  .dashboard-tabs { grid-template-columns: 1fr; }
+  .orders-list { padding: 10px; }
+}
+
+/* respectă reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

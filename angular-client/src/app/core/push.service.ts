@@ -10,19 +10,23 @@ export class PushService {
 
   async init(role: 'BAR'|'BUCATARIE', userId: string) {
     try {
+      console.log('[Push] init start', { role, userId, isEnabled: this.swPush.isEnabled, perm: Notification.permission });
       const perm = await Notification.requestPermission();
+      
+      console.log('[Push] permission result =', perm);
       if (perm !== 'granted') return;
 
       const sub = await this.swPush.requestSubscription({
         serverPublicKey: this.VAPID_PUBLIC_KEY
       });
+      console.log('[Push] got subscription', sub?.endpoint);
 
       await this.http.post('/api/notifications/subscribe', {
         userId,
         role,
         subscription: sub
       }).toPromise();
-
+      console.log('[Push] subscribe sent OK');
       this.swPush.messages.subscribe(msg => console.log('Push message:', msg));
       this.swPush.notificationClicks.subscribe(e => console.log('click', e));
     } catch (e) {
@@ -32,27 +36,24 @@ export class PushService {
 
 
   async resyncPush(userId: string, role: 'BAR'|'BUCATARIE') {
-    try {
-      // ia SW + subscripția curentă (nu cere alta dacă există)
-      const reg = await navigator.serviceWorker.ready;
-      const old = await reg.pushManager.getSubscription();
-      if (old) { try { await old.unsubscribe(); } catch {} }
-      let sub = await reg.pushManager.getSubscription();
+  try {
+    // dacă nu e granted, nu forțăm nimic aici
+    if (Notification.permission !== 'granted') return;
 
-      if (!sub) {
-        // dacă nu există încă, cere una cu cheia ta VAPID
-        sub = await this.swPush.requestSubscription({
-          serverPublicKey: this.VAPID_PUBLIC_KEY
-        });
-      }
-
-      // retrimite la backend cu user/rolul real -> va face UPDATE
-      await this.http.post('/api/notifications/subscribe', {
-        userId, role, subscription: sub
-      }).toPromise();
-    } catch (e) {
-      console.error('[Push] resync failed:', e);
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) {
+      // nu crea alta aici ca să nu declanșezi prompturi; ieși linistit
+      return;
     }
+
+    await this.http.post('/api/notifications/subscribe', {
+      userId, role, subscription: sub
+    }).toPromise();
+  } catch (e) {
+    console.warn('[Push] resync failed:', e);
   }
+}
+
 
 }

@@ -1,6 +1,158 @@
-<div class="content">
-  <div class="center">
-    <h1>Hello, {{ title }}</h1>
-    <p>Congratulations! Your app is running. 🎉</p>
-  </div>
-</div>
+<section class="dashboard">
+  <!-- Hero / Greeting -->
+  <header class="hero">
+    <div class="hero__left">
+      <div class="chip">{{ todayString }}</div>
+      <h1 class="title">
+        👋 Salut, <span class="accent">{{ displayName }}</span>
+      </h1>
+      <p class="subtitle">
+        Ești pe tura de <strong>{{ roleLabel }}</strong>. Hai să vedem cum arată ziua de azi.
+      </p>
+
+      <div class="actions">
+        <button class="btn primary" (click)="goTo('/orders/active')">
+          Vezi comenzi active
+        </button>
+        <button class="btn ghost" (click)="goTo('/orders/completed')">
+          Finalizate azi
+        </button>
+        <button class="btn ghost" (click)="goTo('/orders/canceled')">
+          Anulate
+        </button>
+      </div>
+    </div>
+
+    <div class="hero__right">
+      <div class="blob"></div>
+      <div class="ring ring--1"></div>
+      <div class="ring ring--2"></div>
+    </div>
+  </header>
+
+  <!-- KPI cards -->
+  <section class="kpis">
+    <article class="card kpi" *ngFor="let k of kpis">
+      <div class="kpi__icon">
+        <i class="fa-solid" [ngClass]="k.icon"></i>
+      </div>
+      <div class="kpi__values">
+        <div class="kpi__value">{{ k.value }}</div>
+        <div class="kpi__label">{{ k.label }}</div>
+      </div>
+      <div class="kpi__trend" [class.up]="k.trend>0" [class.down]="k.trend<0">
+        <span>{{ k.trend>0 ? '▲' : (k.trend<0 ? '▼' : '•') }}</span>
+        <small>{{ k.trend | number:'1.0-0' }}%</small>
+      </div>
+    </article>
+  </section>
+
+  <!-- Highlights -->
+  <section class="highlights" *ngIf="productOfDay || (peakZones?.length) || (peakHours?.length)">
+    <!-- Produsul zilei -->
+    <article class="card highlight" *ngIf="productOfDay">
+      <div class="highlight__title">🥇 Produsul zilei</div>
+      <div class="highlight__row">
+        <div class="highlight__name">{{ productOfDay.name }}</div>
+        <div class="highlight__pill">{{ productOfDay.count }} buc</div>
+      </div>
+      <div class="highlight__trend" [class.up]="productOfDay.trendPercent>0" [class.down]="productOfDay.trendPercent<0">
+        {{ productOfDay.trendPercent | number: '1.0-0' }}%
+        față de media ultimelor zile
+      </div>
+    </article>
+
+    <!-- Zone de vârf -->
+    <article class="card highlight" *ngIf="peakZones?.length">
+      <div class="highlight__title">📍 Zone de vârf azi</div>
+      <ul class="zones">
+        <li *ngFor="let z of peakZones | slice:0:3">
+          <span class="zones__name">{{ z.zone }}</span>
+
+          <span class="zones__bar">
+            <span class="zones__fill" [style.width.%]="z.percentOfTotal"></span>
+          </span>
+
+          <span class="zones__val">
+            {{ z.percentOfTotal | number:'1.0-0' }}%
+            <span *ngIf="z.peakHour !== null && z.peakHour !== undefined" class="zones__peak">
+              • vârf: {{ fmt(z.peakHour) }} ({{ z.peakHourOrders || 0 }})
+            </span>
+          </span>
+        </li>
+      </ul>
+    </article>
+
+    <!-- Ore de vârf (global) -->
+    <article class="card highlight" *ngIf="peakHours?.length">
+      <div class="highlight__title">⏱️ Ore de vârf azi</div>
+      <ul class="zones">
+        <li *ngFor="let h of peakHours">
+          <span class="zones__name">{{ fmt(h.hour) }}</span>
+
+          <span class="zones__bar">
+            <span class="zones__fill" [style.width.%]="h.percentOfTotal"></span>
+          </span>
+
+          <span class="zones__val">
+            {{ h.orders }} comenzi ({{ h.percentOfTotal | number:'1.0-0' }}%)
+          </span>
+        </li>
+      </ul>
+    </article>
+  </section>
+
+
+  <!-- 2-column: quick actions + recent -->
+  <section class="grid2">
+    <article class="card card--actions">
+      <h3>Acțiuni rapide</h3>
+      <ul class="action-list">
+        <li *ngFor="let a of quickActions">
+          <button class="action" (click)="goTo(a.href)">
+            <span class="action__icon">
+              <i class="fa-solid" [ngClass]="a.icon"></i>
+            </span>
+            <span class="action__text">
+              <strong>{{ a.title }}</strong>
+              <small>{{ a.desc }}</small>
+            </span>
+          </button>
+        </li>
+      </ul>
+
+    </article>
+
+    <article class="card card--recent">
+      <div class="card__header">
+        <h3>Activitate recentă</h3>
+        <button class="btn tiny ghost" (click)="refresh()">Refresh</button>
+      </div>
+
+      <ul class="timeline" *ngIf="recent && recent.length; else empty">
+        <li *ngFor="let r of recent">
+          <span class="dot" [class.done]="r.type==='done'" [class.pending]="r.type==='pending'" [class.cancelled]="r.type==='cancelled'"></span>
+          <div class="tl__content">
+            <div class="tl__title">
+              {{ r.title }}
+              <span class="badge" [class.badge--done]="r.type==='done'"
+                                 [class.badge--pending]="r.type==='pending'"
+                                 [class.badge--cancelled]="r.type==='cancelled'">
+                {{ r.badge }}
+              </span>
+            </div>
+            <div class="tl__meta">
+              {{ r.when }} • {{ r.zone }}
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <ng-template #empty>
+        <div class="empty">
+          <span>Nu avem încă evenimente. 🍃</span>
+        </div>
+      </ng-template>
+    </article>
+  </section>
+</section>

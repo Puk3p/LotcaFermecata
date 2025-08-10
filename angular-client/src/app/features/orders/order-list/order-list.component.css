@@ -1,14 +1,15 @@
 .order-section {
   padding: 2rem;
+}
 
-  h2 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+.order-section h2 {
+  font-size: 1.6rem;
+  color: #E5E4E2; /* Platinum Frost */
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-shadow: 0 0 6px rgba(75, 0, 130, 0.4);
 }
 
 .order-grid {
@@ -17,42 +18,69 @@
   gap: 1.5rem;
 }
 
+/* === CARD COMANDĂ === */
 .order-card {
-  background: white;
+  background: rgba(229, 228, 226, 0.08); /* Platinum Frost translucid */
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(75, 0, 130, 0.2);
   padding: 1.25rem;
   border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 15px rgba(75, 0, 130, 0.25);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
 
-  &:hover {
-    transform: translateY(-3px);
-  }
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 20px rgba(75, 0, 130, 0.4);
+}
 
-  .order-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.order-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    h3 {
-      font-size: 1.1rem;
-      margin: 0;
-    }
+.order-top h3 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #E5E4E2;
+}
 
-    .phone {
-      font-weight: 500;
-      color: #4B0082;
-    }
+.phone {
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #E5E4E2;
+}
 
-    .placed {
-      font-size: 0.85rem;
-      color: #666;
-    }
-  }
+.phone i {
+  margin-right: 6px;
+  color: #E5E4E2;
+  font-size: 1rem;
+}
 
-  .order-status {
+.phone a {
+  color: #E5E4E2;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.phone a:hover {
+  color: #c8b6ff;
+  transform: scale(1.05);
+}
+
+.placed {
+  font-size: 0.85rem;
+  color: rgba(229, 228, 226, 0.7);
+}
+
+/* === STATUS COMANDĂ === */
+.order-status {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -61,172 +89,103 @@
   padding: 4px 10px;
   border-radius: 999px;
   border: 1px solid transparent;
-  background-color: #f4f4f4;
+  background-color: rgba(229, 228, 226, 0.08);
   width: fit-content;
   min-width: 100px;
   margin: 0.5rem 0;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
   text-transform: capitalize;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  color: #E5E4E2;
 }
 
 .order-status.waiting {
-  color: #c77d00;
-  background-color: rgba(255, 213, 133, 0.2);
-  border-color: #c77d00;
-  box-shadow: 0 0 8px rgba(255, 174, 0, 0.6);
+  background-color: rgba(255, 213, 133, 0.15);
+  border-color: #ffc966;
+  box-shadow: 0 0 8px rgba(255, 213, 133, 0.4);
 }
 
 .order-status.cooking {
-  color: #d39e00;
-  background-color: rgba(255, 200, 0, 0.2);
-  border-color: #d39e00;
-  box-shadow: 0 0 8px rgba(255, 200, 0, 0.6);
+  background-color: rgba(255, 200, 0, 0.15);
+  border-color: #ffd633;
+  box-shadow: 0 0 8px rgba(255, 200, 0, 0.4);
 }
 
 .order-status.done {
-  color: #2e7d32;
-  background-color: rgba(46, 125, 50, 0.2);
-  border-color: #2e7d32;
-  box-shadow: 0 0 8px rgba(46, 125, 50, 0.5);
+  background-color: rgba(46, 125, 50, 0.15);
+  border-color: #4caf50;
+  box-shadow: 0 0 8px rgba(46, 125, 50, 0.4);
 }
 
 .order-status.cancelled {
-  color: #c62828;
-  background-color: rgba(255, 0, 0, 0.1);
-  border-color: #c62828;
-  box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+  background-color: rgba(255, 0, 0, 0.15);
+  border-color: #ff4d4d;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
 }
 
-
-  .item-list {
-    padding-left: 0;
-    list-style: none;
-    margin: 0;
-
-    li {
-      font-size: 0.95rem;
-      padding: 4px 0;
-    }
-  }
-
-  .details-footer {
-    margin-top: 1rem;
-    text-align: right;
-
-    .details-link {
-      color: #4B0082;
-      font-weight: 600;
-      text-decoration: none;
-      font-size: 0.95rem;
-
-      i {
-        margin-right: 4px;
-      }
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
+/* === LISTĂ PRODUSE === */
+.item-list {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
 }
 
+.item-list li {
+  font-size: 0.95rem;
+  padding: 4px 0;
+  color: #E5E4E2;
+}
+
+/* === FOOTER DETALII === */
+.details-footer {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.details-link {
+  color: #c8b6ff;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.details-link i {
+  margin-right: 4px;
+}
+
+.details-link:hover {
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(200, 182, 255, 0.8);
+}
+
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
   .order-section {
     padding: 1rem;
-
-    h2 {
-      font-size: 1.25rem;
-    }
   }
 
   .order-grid {
     grid-template-columns: 1fr;
   }
-
-  .order-card {
-    padding: 1rem;
-  }
-
-  .order-card .order-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-
-    h3 {
-      font-size: 1rem;
-    }
-
-    .phone {
-      font-size: 0.9rem;
-    }
-  }
-
-  .order-status {
-    font-size: 0.85rem;
-  }
-
-  .item-list li {
-    font-size: 0.9rem;
-  }
-
-  .details-footer {
-    text-align: left;
-
-    .details-link {
-      font-size: 0.9rem;
-    }
-  }
 }
 
-@media (max-width: 480px) {
-  .order-section {
-    h2 {
-      font-size: 1.1rem;
-    }
-  }
 
-  .order-card {
-    padding: 0.75rem;
-    border-radius: 12px;
-  }
-
-  .order-card .order-top h3 {
-    font-size: 0.95rem;
-  }
-
-  .order-card .phone,
-  .order-status,
-  .details-link {
-    font-size: 0.85rem;
-  }
-
-  .item-list li {
-    font-size: 0.85rem;
-  }
+/* Iconiță ceas */
+.order-top .placed i {
+  color: #64B5F6; /* albastru deschis */
 }
 
-.phone {
-  display: flex;
-  align-items: center;
-  font-size: 16px; /* mărit față de 14px */
-  color: #4B0082; /* Velvet Indigo */
-}
-
+/* Iconiță telefon */
 .phone i {
-  margin-right: 6px;
-  color: #4B0082;
-  font-size: 18px; /* icon puțin mai mare */
+  color: #4CAF50; /* verde */
 }
 
-.phone a {
-  color: #4B0082;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease, transform 0.2s ease;
+/* Iconiță produs */
+.item-list li i {
+  color: #FFD54F; /* galben auriu */
 }
 
-.phone a:hover {
-  color: #6d2b9c;
-  text-decoration: underline;
-  transform: scale(1.05);
+/* Iconiță detalii */
+.details-footer .details-link i {
+  color: #B39DDB; /* mov lavandă */
 }

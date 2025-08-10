@@ -1,8 +1,20 @@
 <div class="login-container">
   <form class="login-form" (ngSubmit)="onRegister()">
-    <input type="text" [(ngModel)]="username" name="username" placeholder="Username" required>
-    <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required>
-    <button type="submit">Register</button>
+    <h2 class="form-title">Creează cont</h2>
+
+    <input type="text"
+           [(ngModel)]="username"
+           name="username"
+           placeholder="Username"
+           required />
+
+    <input type="password"
+           [(ngModel)]="password"
+           name="password"
+           placeholder="Password"
+           required />
+
+    <button type="submit">Înregistrează-te</button>
     <a routerLink="/auth/login">Ai deja cont? Login</a>
   </form>
 </div>

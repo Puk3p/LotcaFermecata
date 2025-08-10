@@ -638,3 +638,143 @@ li {
     flex: 1 1 100%;
   }
 }
+
+/* === PATCH: Detalii comandă în tema Velvet Indigo + glass =============== */
+
+/* card-ul principal devine glass */
+.content {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #E5E4E2 !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 18px;
+  max-width: 820px;         /* un pic mai aerisit pe detalii */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+/* header + butoane */
+.header-row h2 {
+  color: #E5E4E2 !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,.3);
+}
+.back-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #E5E4E2;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: transform .15s ease, border-color .2s ease;
+}
+.back-btn:hover { transform: translateY(-1px); border-color: rgba(255,255,255,0.3); }
+
+.edit-btn,
+.update-btn,
+.submit-button {
+  background: linear-gradient(90deg, #4B0082, #6a0dad) !important;
+  color: #E5E4E2 !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 20px rgba(75,0,130,.35);
+  transition: filter .2s ease, transform .15s ease, box-shadow .2s ease;
+}
+.edit-btn:hover,
+.update-btn:hover,
+.submit-button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+/* butonul de anulare = ghost indigo */
+.cancel-btn {
+  background: transparent !important;
+  color: #E5E4E2 !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  border-radius: 10px !important;
+}
+.cancel-btn:hover { border-color: rgba(255,255,255,0.3) !important; }
+
+/* text & separatoare */
+p { color: #E5E4E2; }
+p strong { color: #ffffff; }
+hr { border-top: 1px solid rgba(255,255,255,0.12); }
+
+/* icon-uri colorate (accente subtile) */
+.header-row h2 i        { color: #B39DDB; } /* receipt */
+p i.fa-clock            { color: #64B5F6; } /* ora */
+p i.fa-map-marker-alt   { color: #81C784; } /* zonă */
+p i.fa-user             { color: #ffd54f; } /* client */
+p i.fa-hashtag          { color: #90CAF9; } /* id */
+.status-row i.fa-tasks  { color: #B39DDB; }
+
+/* linkuri/telefon */
+a { color: #c8b6ff; }
+a:hover { color: #ffffff; text-shadow: 0 0 6px rgba(200,182,255,.8); }
+
+/* select & input în dark */
+select,
+.edit-section input,
+.edit-section select {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  color: #E5E4E2 !important;
+  box-shadow: none !important;
+}
+select:focus,
+.edit-section input:focus,
+.edit-section select:focus {
+  outline: none;
+  border-color: rgba(75,0,130,.55) !important;
+  box-shadow: 0 0 0 3px rgba(75,0,130,.35) !important;
+}
+
+/* status badge – versiune pe dark (glow ușor) */
+.order-status {
+  color: #E5E4E2;
+  border: 1px solid transparent;
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 0 8px rgba(0,0,0,.25);
+}
+.order-status.waiting {
+  background-color: rgba(255, 213, 133, 0.15);
+  border-color: #ffc966;
+  box-shadow: 0 0 10px rgba(255, 213, 133, 0.35);
+}
+.order-status.cooking {
+  background-color: rgba(255, 200, 0, 0.15);
+  border-color: #ffd633;
+  box-shadow: 0 0 10px rgba(255, 200, 0, 0.35);
+}
+.order-status.done {
+  background-color: rgba(46, 125, 50, 0.18);
+  border-color: #4caf50;
+  box-shadow: 0 0 10px rgba(46, 125, 50, 0.35);
+}
+.order-status.cancelled {
+  background-color: rgba(255, 82, 82, 0.15);
+  border-color: #ff6b6b;
+  box-shadow: 0 0 10px rgba(255, 107, 107, 0.35);
+}
+
+/* „Produse” listă pe dark */
+h3 { color: #E5E4E2; }
+ul { list-style: none; padding-left: 0; }
+ul li { color: #E5E4E2; padding: 4px 0; }
+
+/* coș & elemente editare – glass subtil */
+.cart-section {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #E5E4E2;
+}
+.menu-item {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: #E5E4E2;
+}
+
+/* focus accesibil */
+:where(button, a, select, input).focus-visible,
+:where(button, a, select, input):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(75,0,130,.45);
+}
+
+/* mobile tweaks rămân valabile */
