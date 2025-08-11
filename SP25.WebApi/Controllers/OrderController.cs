@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using SP25.Business.ModelDTOs;
 using SP25.Business.Services.Contracts;
-using System.Security.Claims;
+using SP25.Domain.Models;
 using System;
+using System.Globalization;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SP25.WebApi.Controllers
@@ -15,11 +17,14 @@ namespace SP25.WebApi.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly INotificationService _notifications;
+        private readonly IPriceCatalog _prices;
 
-        public OrderController(IOrderService orderService, INotificationService notifications)
+        public OrderController(IOrderService orderService, INotificationService notifications,
+            IPriceCatalog prices)
         {
             _orderService = orderService;
             _notifications = notifications;
+            _prices = prices;
         }
 
         [HttpGet("ping")]
@@ -146,6 +151,16 @@ namespace SP25.WebApi.Controllers
         public async Task<IActionResult> GetArchivedGrouped()
         {
             var grouped = await _orderService.GetArchivedGroupedAsync();
+            return Ok(grouped);
+        }
+
+
+        [HttpGet("archived/grouped")]
+        public async Task<IActionResult> GetArchivedDetailed(
+            [FromQuery] bool paidOnly = false,
+            [FromQuery] bool includePayments = false)
+        {
+            var grouped = await _orderService.GetArchivedGroupedDetailedAsync(paidOnly, includePayments);
             return Ok(grouped);
         }
     }

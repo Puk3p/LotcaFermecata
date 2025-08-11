@@ -20,6 +20,8 @@ namespace SP25.Business.Services.Contracts
         Task<List<OrderDto>> GetCancelledOrdersAsync();
         Task<Dictionary<string, List<OrderDto>>> GetArchivedGroupedAsync();
         Task<bool> UpdateStatusAsync(UpdateOrderStatusDto dto);
+        Task<Dictionary<string, DayArchiveDto>> GetArchivedGroupedDetailedAsync(
+            bool paidOnly = false, bool includePayments = false);
 
     }
 }

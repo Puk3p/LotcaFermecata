@@ -1,10 +1,9 @@
-// orders.component.ts
 import { Component, OnInit } from '@angular/core';
-import { Order } from './order.model';
-import { OrderService } from './order.service';
 import { CommonModule } from '@angular/common';
-import { OrderListComponent } from './order-list/order-list.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Order, ArchivedGrouped, ArchivedDay } from './order.model';
+import { OrderService } from './order.service';
+import { OrderListComponent } from './order-list/order-list.component';
 
 type TabType = 'active' | 'completed' | 'canceled' | 'archive';
 
@@ -16,13 +15,11 @@ type TabType = 'active' | 'completed' | 'canceled' | 'archive';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
-  // lista curentă pentru taburile non-archive
   currentOrders: Order[] = [];
 
-  // pentru arhivă (grupată pe zile)
-  archivedGrouped: { [date: string]: Order[] } = {};
+  // Obiectul de la backend cu orders + summary + totals pe zi
+  archivedGrouped: ArchivedGrouped = {};
 
-  // pentru badge-uri/număr (opțional)
   activeCount = 0;
   completedCount = 0;
   canceledCount = 0;
@@ -30,7 +27,11 @@ export class OrdersComponent implements OnInit {
 
   selectedTab: TabType = 'active';
 
-  constructor(private orderService: OrderService, private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private orderService: OrderService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -39,7 +40,6 @@ export class OrdersComponent implements OnInit {
       this.loadForTab(this.selectedTab);
     });
 
-    // (opțional) poți popula și contorii în background
     this.prefetchCounts();
   }
 
@@ -51,7 +51,6 @@ export class OrdersComponent implements OnInit {
     this.router.navigate(['/orders', tab]);
   }
 
-  // AICI e magia: fiecare tab -> endpoint-ul lui din OrderService
   loadForTab(tab: TabType) {
     if (tab === 'active') {
       this.orderService.getActiveOrders().subscribe(list => this.currentOrders = list);
@@ -65,20 +64,21 @@ export class OrdersComponent implements OnInit {
       this.orderService.getCancelledOrders().subscribe(list => this.currentOrders = list);
       return;
     }
+
     // archive
     this.orderService.getArchivedOrders().subscribe(grouped => {
       this.archivedGrouped = grouped || {};
-      this.archivedCount = Object.values(this.archivedGrouped).reduce((sum, arr) => sum + arr.length, 0);
+      this.archivedCount = Object.values(this.archivedGrouped)
+        .reduce((sum, day) => sum + (day?.orders?.length || 0), 0);
     });
   }
 
-  // (opțional) doar ca să afișezi cifrele pe tab-uri fără a depinde de tabul curent
   private prefetchCounts() {
     this.orderService.getActiveOrders().subscribe(l => this.activeCount = l.length);
     this.orderService.getCompletedOrders().subscribe(l => this.completedCount = l.length);
     this.orderService.getCancelledOrders().subscribe(l => this.canceledCount = l.length);
     this.orderService.getArchivedOrders().subscribe(g => {
-      const total = Object.values(g || {}).reduce((s, arr) => s + arr.length, 0);
+      const total = Object.values(g || {}).reduce((s, day) => s + (day?.orders?.length || 0), 0);
       this.archivedCount = total;
     });
   }
@@ -88,4 +88,18 @@ export class OrdersComponent implements OnInit {
       new Date(b).getTime() - new Date(a).getTime()
     );
   }
+
+  // Helpers pt. template (evităm expresii complicate în HTML)
+  hasAnyUnitPrice(day: ArchivedDay | undefined | null): boolean {
+    if (!day?.summary) return false;
+    for (const l of day.summary) if (l.unitPrice != null) return true;
+    return false;
+  }
+
+  hasAnyTotal(day: ArchivedDay | undefined | null): boolean {
+    if (!day?.summary) return false;
+    for (const l of day.summary) if (l.totalPaid != null) return true;
+    return false;
+  }
 }
+  

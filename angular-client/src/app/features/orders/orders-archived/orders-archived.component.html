@@ -1,12 +1,56 @@
 <div class="orders-page">
   <h2>Comenzi Arhivate</h2>
 
-  <div *ngFor="let date of getSortedDates()">
-    <h3>{{ date }}</h3>
+  <div *ngFor="let date of getSortedDates()" class="day-wrap">
+    <h3 class="day-title">{{ date }}</h3>
 
     <ng-container *ngIf="groupedOrders && groupedOrders[date] as ordersInDay; else noOrders">
       <app-order-list [orders]="ordersInDay"></app-order-list>
       <p *ngIf="ordersInDay.length === 0">Nicio comandă în această zi.</p>
+
+      <!-- Rezumat zilnic (DOAR plătite) -->
+      <ng-container *ngIf="getCloseOut(date) as close">
+        <div class="daily-summary card">
+          <div class="summary-header">
+            <h4>Rezumat plăți pe zi (per produs)</h4>
+            <div class="pills">
+              <span class="pill">Comenzi plătite: {{ close.totals.ordersPaid }}</span>
+              <span class="pill">Bucăți: {{ close.totals.itemsPaid }}</span>
+              <span class="pill" *ngIf="close.totals.revenue != null">
+                Total: {{ close.totals.revenue | number: '1.2-2' }} lei
+              </span>
+            </div>
+          </div>
+
+          <table class="lines">
+            <thead>
+              <tr>
+                <th>Produs</th>
+                <th>Comenzi</th>
+                <th>Bucăți</th>
+                <th *ngIf="hasAnyUnitPrice(close)">Preț</th>
+                <th *ngIf="hasAnyTotal(close)">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let l of close.lines">
+                <td>{{ l.productName }}</td>
+                <td>{{ l.ordersCount }}</td>
+                <td>{{ l.quantity }}</td>
+                <td *ngIf="l.unitPrice != null">{{ l.unitPrice | number: '1.2-2' }} lei</td>
+                <td *ngIf="l.totalPaid != null">{{ l.totalPaid | number: '1.2-2' }} lei</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="payments" *ngIf="(close.totals.paymentMethods | keyvalue)?.length">
+            <span>Metode plată:</span>
+            <span class="pill" *ngFor="let p of close.totals.paymentMethods | keyvalue">
+              {{ p.key }}: {{ p.value }}
+            </span>
+          </div>
+        </div>
+      </ng-container>
     </ng-container>
 
     <ng-template #noOrders>

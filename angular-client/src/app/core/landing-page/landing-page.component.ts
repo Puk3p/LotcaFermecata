@@ -87,6 +87,7 @@ export class LandingPageComponent implements OnInit {
           
           this.peakHours = (data.peakHours || []).map(h => ({
             ...h,
+            hour: (h.hour + 3) % 24,
             percentOfTotal: Math.max(0, Math.min(100, h.percentOfTotal ?? 0))
           }));
 

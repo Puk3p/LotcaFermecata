@@ -48,6 +48,25 @@ export interface HourStatDto {
   percentOfTotal: number;
 }
 
+export interface DailyCloseTotalsDto {
+  ordersPaid: number;
+  itemsPaid: number;
+  revenue?: number | null;
+  paymentMethods: Record<string, number>;
+}
+export interface DailyCloseLineDto {
+  productName: string;
+  ordersCount: number;
+  quantity: number;
+  unitPrice?: number | null;
+  totalPaid?: number | null;
+}
+export interface DailyCloseDto {
+  date: string;
+  lines: DailyCloseLineDto[];
+  totals: DailyCloseTotalsDto;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -62,5 +81,12 @@ export class DashboardService {
    */
   getTodayDashboard(role: 'BAR' | 'BUCATARIE'): Observable<DashboardDto> {
     return this.http.get<DashboardDto>(`${this.baseUrl}/today`);
+  }
+
+  getDailyCloseout(date: string) {
+    return this.http.get<DailyCloseDto>(`/api/archive/closeout?date=${date}`);
+  }
+  getCloseoutRange(days = 7) {
+    return this.http.get<DailyCloseDto[]>(`/api/archive/closeout-range?days=${days}`);
   }
 }

@@ -1,0 +1,320 @@
+﻿[
+  {
+    "category": "Cafea & Răcoritoare",
+    "items": [
+      {
+        "name": "Caffe Latte",
+        "price": 10
+      },
+      {
+        "name": "Espresso",
+        "price": 8
+      },
+      {
+        "name": "Ness Frappe",
+        "price": 20
+      },
+      {
+        "name": "Fresh Portocale",
+        "price": 20
+      },
+      {
+        "name": "Limonada",
+        "price": 16
+      },
+      {
+        "name": "Pepsi",
+        "price": 12
+      },
+      {
+        "name": "Prigat",
+        "price": 12
+      },
+      {
+        "name": "Mirinda",
+        "price": 12
+      },
+      {
+        "name": "Lipton",
+        "price": 12
+      },
+      {
+        "name": "7 Up",
+        "price": 12
+      },
+      {
+        "name": "Mountain Dew",
+        "price": 12
+      },
+      {
+        "name": "Coca Cola",
+        "price": 12
+      },
+      {
+        "name": "Fanta",
+        "price": 12
+      },
+      {
+        "name": "Prigat Nectar",
+        "price": 11
+      },
+      {
+        "name": "Aqua Plata",
+        "price": 8
+      },
+      {
+        "name": "Aqua Minerala",
+        "price": 8
+      },
+      {
+        "name": "Borsec Plata",
+        "price": 8
+      },
+      {
+        "name": "Borsec Minerala",
+        "price": 8
+      }
+    ]
+  },
+  {
+    "category": "Energizante & Cidru",
+    "items": [
+      {
+        "name": "Hell",
+        "price": 8
+      },
+      {
+        "name": "Red Bull",
+        "price": 10
+      },
+      {
+        "name": "Strongbow",
+        "price": 12
+      }
+    ]
+  },
+  {
+    "category": "Bere",
+    "items": [
+      {
+        "name": "Stella C.A.",
+        "price": 12
+      },
+      {
+        "name": "Beck's",
+        "price": 10
+      },
+      {
+        "name": "Staropramen",
+        "price": 10
+      },
+      {
+        "name": "Bergenbier",
+        "price": 10
+      },
+      {
+        "name": "Ciuc Premium",
+        "price": 10
+      }
+    ]
+  },
+  {
+    "category": "Bere fără alcool",
+    "items": [
+      {
+        "name": "Stella",
+        "price": 10
+      },
+      {
+        "name": "Bergenbier",
+        "price": 8
+      },
+      {
+        "name": "Fresh",
+        "price": 8
+      },
+      {
+        "name": "Ciuc Radler",
+        "price": 10
+      },
+      {
+        "name": "Heineken",
+        "price": 12
+      }
+    ]
+  },
+  {
+    "category": "Tărie",
+    "items": [
+      {
+        "name": "J&B",
+        "price": 15
+      },
+      {
+        "name": "Jack Daniel's",
+        "price": 18
+      },
+      {
+        "name": "Sierra Gold Tequila",
+        "price": 12
+      },
+      {
+        "name": "Captain Morgan",
+        "price": 16
+      },
+      {
+        "name": "Havana Club",
+        "price": 12
+      },
+      {
+        "name": "Vecchia Romagna",
+        "price": 12
+      },
+      {
+        "name": "Metaxa 5*",
+        "price": 12
+      },
+      {
+        "name": "Alexandrion",
+        "price": 20
+      },
+      {
+        "name": "Metaxa 7*",
+        "price": 18
+      },
+      {
+        "name": "Shridan's",
+        "price": 12
+      },
+      {
+        "name": "Gilman's Gin",
+        "price": 12
+      },
+      {
+        "name": "Stalinskaya",
+        "price": 10
+      },
+      {
+        "name": "Absolut",
+        "price": 12
+      }
+    ]
+  },
+  {
+    "category": "Vinuri & Spumant",
+    "items": [
+      {
+        "name": "Vin Jidvei Premiat + Riesling",
+        "price": 40
+      },
+      {
+        "name": "Vin Jidvei + Gewurtztraminer",
+        "price": 45
+      },
+      {
+        "name": "Vin Spumant Zarea Demisec",
+        "price": 40
+      }
+    ]
+  },
+  {
+    "category": "Mâncare",
+    "items": [
+      {
+        "name": "Șnițel de pui cu fulgi de porumb",
+        "price": 20
+      },
+      {
+        "name": "File piept de pui pesmetat",
+        "price": 10
+      },
+      {
+        "name": "Șnițel de pui umplut cu șuncă și cașcaval",
+        "price": 25
+      },
+      {
+        "name": "Aripioare de pui picante",
+        "price": 15
+      },
+      {
+        "name": "Aripioare de pui nepicante",
+        "price": 15
+      },
+      {
+        "name": "Grujoane piept de pui",
+        "price": 20
+      },
+      {
+        "name": "Ceafă de porc",
+        "price": 20
+      },
+      {
+        "name": "Mici",
+        "price": 4
+      },
+      {
+        "name": "Pizza",
+        "price": 35
+      }
+    ]
+  },
+  {
+    "category": "Garnituri & Salate",
+    "items": [
+      {
+        "name": "Cartofi prăjiți",
+        "price": 14
+      },
+      {
+        "name": "Cartofi wedges",
+        "price": 20
+      },
+      {
+        "name": "Salată de roșii și castraveți",
+        "price": 14
+      },
+      {
+        "name": "Salată mixtă de acrituri",
+        "price": 14
+      },
+      {
+        "name": "Chiflă",
+        "price": 2
+      }
+    ]
+  },
+  {
+    "category": "Sosuri & Condimente",
+    "items": [
+      {
+        "name": "Sos usturoi",
+        "price": 5
+      },
+      {
+        "name": "Sos dulce de roșii",
+        "price": 5
+      },
+      {
+        "name": "Sos picant de roșii",
+        "price": 5
+      },
+      {
+        "name": "Muștar",
+        "price": 3
+      }
+    ]
+  },
+  {
+    "category": "Desert",
+    "items": [
+      {
+        "name": "Gogoși",
+        "price": 10
+      },
+      {
+        "name": "Papanasi",
+        "price": 20
+      }
+    ]
+  }
+]

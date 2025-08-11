@@ -1,0 +1,32 @@
+.day-wrap { margin-bottom: 28px; }
+.day-title { margin: 12px 0; }
+
+.card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 4px 10px; border-radius: 999px; font-size: 12px;
+}
+
+table.lines { width: 100%; border-collapse: collapse; }
+table.lines th, table.lines td {
+  padding: 8px;
+  border-bottom: 1px dashed rgba(255,255,255,0.08);
+  text-align: left;
+}
+.payments { margin-top: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }

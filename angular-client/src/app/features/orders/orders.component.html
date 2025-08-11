@@ -2,8 +2,9 @@
 <div class="dashboard">
   <h2>Panou Comenzi</h2>
 
+  <!-- Tabs -->
   <div class="dashboard-tabs">
-    <div class="tab-card" [class.active]="selectedTab === 'active'"  routerLink="/orders/active">
+    <div class="tab-card" [class.active]="selectedTab === 'active'" routerLink="/orders/active">
       <h3>Active</h3>
       <p>{{ activeCount }} comenzi</p>
     </div>
@@ -24,26 +25,87 @@
     </div>
   </div>
 
-  <!-- Taburi non-archive -->
+  <!-- Liste pentru taburile non-archive -->
   <ng-container *ngIf="selectedTab !== 'archive'">
     <div class="orders-list">
       <app-order-list [orders]="currentOrders"></app-order-list>
     </div>
   </ng-container>
 
-  <!-- Tab Arhivate -->
+  <!-- Tab: Arhivate (pe zile + sumar) -->
   <ng-container *ngIf="selectedTab === 'archive'">
     <div class="orders-list">
       <div *ngFor="let day of getArchivedDates()" class="archive-day">
-        <h4>{{ day }}</h4>
+        <h3 class="day-title">{{ day }}</h3>
 
-        <ng-container *ngIf="archivedGrouped && archivedGrouped[day] && archivedGrouped[day].length > 0">
-          <app-order-list [orders]="archivedGrouped[day]"></app-order-list>
+        <!-- ziua curentă din dicționar -->
+        <ng-container *ngIf="archivedGrouped?.[day] as dayData">
+
+          <!-- Lista comenzilor zilei -->
+          <ng-container *ngIf="dayData.orders?.length; else noDayOrders">
+            <app-order-list [orders]="dayData.orders"></app-order-list>
+          </ng-container>
+          <ng-template #noDayOrders>
+            <p class="muted">Nicio comandă în această zi.</p>
+          </ng-template>
+
+          <!-- Rezumatul pe zi (produse plătite) -->
+          <div class="daily-summary card" *ngIf="(dayData.summary?.length || dayData.totals)">
+
+            <div class="summary-header">
+              <h4>Rezumat plăți pe zi (per produs)</h4>
+              <div class="pills">
+                <span class="pill" *ngIf="dayData.totals?.ordersPaid !== undefined">
+                  Comenzi plătite: {{ dayData.totals.ordersPaid }}
+                </span>
+                <span class="pill" *ngIf="dayData.totals?.itemsPaid !== undefined">
+                  Bucăți: {{ dayData.totals.itemsPaid }}
+                </span>
+                <span class="pill" *ngIf="dayData.totals?.revenue !== null && dayData.totals?.revenue !== undefined">
+                  Total: {{ dayData.totals.revenue | number:'1.2-2' }} lei
+                </span>
+              </div>
+            </div>
+
+            <!-- Tabel produse -->
+            <div *ngIf="dayData.summary?.length; else noSummary" class="table-wrap">
+              <table class="lines">
+                <thead>
+                  <tr>
+                    <th>Produs</th>
+                    <th>Comenzi</th>
+                    <th>Bucăți</th>
+                    <th *ngIf="hasAnyUnitPrice(dayData)">Preț</th>
+                    <th *ngIf="hasAnyTotal(dayData)">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let l of dayData.summary">
+                    <td>{{ l.productName }}</td>
+                    <td>{{ l.ordersCount }}</td>
+                    <td>{{ l.quantity }}</td>
+                    <td *ngIf="l.unitPrice != null">{{ l.unitPrice | number:'1.2-2' }} lei</td>
+                    <td *ngIf="l.totalPaid != null">{{ l.totalPaid | number:'1.2-2' }} lei</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <ng-template #noSummary>
+              <p class="muted">Nu există încă linii de plată pentru ziua aceasta.</p>
+            </ng-template>
+
+            <!-- Metode de plată -->
+            <ng-container *ngIf="(dayData.totals?.paymentMethods | keyvalue) as pm">
+              <div class="payments" *ngIf="pm.length > 0">
+                <span class="muted">Metode plată:</span>
+                <span class="pill" *ngFor="let entry of pm">
+                  {{ entry.key }}: {{ entry.value }}
+                </span>
+              </div>
+            </ng-container>
+
+          </div>
         </ng-container>
-
-        <p *ngIf="!archivedGrouped || !archivedGrouped[day] || archivedGrouped[day].length === 0">
-          Nicio comandă arhivată în această zi.
-        </p>
       </div>
     </div>
   </ng-container>

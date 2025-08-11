@@ -43,6 +43,8 @@ namespace SP25.WebApi
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<ITestService, TestService>();
             builder.Services.AddScoped<INotificationService, NotificationService>();
+            builder.Services.AddSingleton<IPriceCatalog, PriceCatalog>();
+
 
 
             var app = builder.Build();

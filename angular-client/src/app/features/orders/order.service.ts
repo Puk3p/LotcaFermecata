@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateOrder, GroupedOrdersDto, Order } from './order.model';
+import { ArchivedGrouped, CreateOrder, GroupedOrdersDto, Order } from './order.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
@@ -22,11 +22,7 @@ export class OrderService {
   }
 
   updateStatus(id: string, newStatus: string): Observable<{ success: boolean }> {
-    const body = {
-      OrderId: id,
-      NewStatus: newStatus
-    };
-
+    const body = { OrderId: id, NewStatus: newStatus };
     return this.http.patch<{ success: boolean }>(`${this.apiUrl}/update-status`, body);
   }
 
@@ -42,7 +38,7 @@ export class OrderService {
     return this.http.get<Order[]>(`${this.apiUrl}`);
   }
 
-  getGroupedOrders() : Observable<GroupedOrdersDto> {
+  getGroupedOrders(): Observable<GroupedOrdersDto> {
     return this.http.get<GroupedOrdersDto>(`${this.apiUrl}/grouped-by-date`);
   }
 
@@ -58,8 +54,9 @@ export class OrderService {
     return this.http.get<Order[]>(`${this.apiUrl}/cancelled`);
   }
 
-  getArchivedOrders(): Observable<{ [key: string]: Order[] }> {
-    return this.http.get<{ [key: string]: Order[] }>(`${this.apiUrl}/archived`);
+  // <- folosește endpoint-ul nou cu orders+summary+totals
+  getArchivedOrders(): Observable<ArchivedGrouped> {
+    return this.http.get<ArchivedGrouped>(`${this.apiUrl}/archived/grouped`);
   }
 
   notifyStatusChange(orderId: string, newStatus: string) {
@@ -68,5 +65,4 @@ export class OrderService {
       { orderId, newStatus }
     );
   }
-
 }

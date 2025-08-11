@@ -1,95 +1,43 @@
-.dashboard-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-  justify-content: center;
-}
+/* ===========================
+   Orders Dashboard — Velvet Indigo Glass
+   =========================== */
 
-.tab-card {
-  flex: 1 1 160px;
-  max-width: 200px;
-  background-color: #f2f2f2;
-  border-radius: 10px;
-  padding: 0.5rem 0.75rem;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-}
-
-.tab-card:hover {
-  background-color: #e0e0e0;
-}
-
-.tab-card.active {
-  background-color: #4B0082;
-  color: white;
-}
-
-.archive-day {
-  border-top: 1px solid #ccc;
-  margin-top: 1.5rem;
-  padding-top: 0.75rem;
-}
-
-.new-order-btn {
-  background-color: #4B0082;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 0.95rem;
-  transition: background-color 0.2s, transform 0.2s;
-  margin-top: 0.5rem;
-}
-
-.new-order-btn:hover {
-  background-color: #370062;
-  transform: scale(1.05);
-}
-
-/* Responsive pentru telefon */
-@media (max-width: 768px) {
-  .tab-card {
-    width: 90%;
-    max-width: 300px;
-    font-size: 0.85rem;
-    padding: 0.5rem;
-  }
-}
-
-
-/* === THEME PATCH: Orders în stil dashboard (glass + Velvet Indigo) ===== */
-
-/* container */
+/* Container */
 .dashboard {
+  --bg-panel: rgba(255,255,255,0.06);
+  --bd-panel: rgba(255,255,255,0.12);
+  --txt: #E8E7F0;
+  --txt-dim: rgba(232,231,240, .82);
+  --accent-1: #4B0082;         /* indigo */
+  --accent-2: #6a0dad;         /* purple */
+  --glow: rgba(75,0,130,.45);
+
   max-width: 1200px;
   margin: 0 auto;
   padding: clamp(16px, 2vw, 28px);
-  color: #E5E4E2;
+  color: var(--txt);
 }
 
 .dashboard > h2 {
   margin: 0 0 12px 0;
   font-weight: 800;
   letter-spacing: .2px;
-  color: #E5E4E2;
+  color: var(--txt);
 }
 
-/* tabs ca "cards" glass */
+/* ===========================
+   Tabs (glass cards)
+   =========================== */
 .dashboard-tabs {
   display: grid;
-  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
   gap: 12px;
   margin: 10px 0 18px 0;
 }
 
 .tab-card {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: var(--bg-panel);
+  border: 1px solid var(--bd-panel);
   border-radius: 14px;
   padding: 12px 14px;
   text-align: center;
@@ -97,12 +45,12 @@
   transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: #E5E4E2;
+  color: var(--txt);
   box-shadow: 0 10px 24px rgba(0,0,0,.25);
 }
 
 .tab-card h3 {
-  margin: 2px 0 2px 0;
+  margin: 2px 0 4px 0;
   font-size: 1rem;
   font-weight: 800;
   letter-spacing: .2px;
@@ -112,57 +60,162 @@
   margin: 0;
   opacity: .9;
   font-size: .9rem;
+  color: var(--txt-dim);
 }
 
-/* hover */
 .tab-card:hover {
   transform: translateY(-2px);
   border-color: rgba(255,255,255,0.2);
 }
 
-/* activ = accent indigo + ușor glow */
 .tab-card.active {
-  background: linear-gradient(90deg, #4B0082, #6a0dad);
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
   border-color: transparent;
-  box-shadow: 0 12px 30px rgba(75,0,130,.45);
+  box-shadow: 0 12px 30px var(--glow);
 }
 
-/* focus accesibil pentru tastatură */
 .tab-card:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(75,0,130,.45), 0 12px 30px rgba(75,0,130,.35);
   border-color: rgba(75,0,130,.55);
 }
 
-/* lista + arhiva */
+/* ===========================
+   Orders list panel
+   =========================== */
 .orders-list {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: var(--bg-panel);
+  border: 1px solid var(--bd-panel);
   border-radius: 16px;
-  padding: 12px;
+  padding: 14px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 10px 24px rgba(0,0,0,.25);
 }
 
+/* ===========================
+   Archive day section
+   =========================== */
 .archive-day {
-  border-top: 1px solid rgba(255,255,255,0.12);
-  margin-top: 16px;
-  padding-top: 10px;
+  border-top: 1px solid var(--bd-panel);
+  margin-top: 18px;
+  padding-top: 12px;
 }
 
-.archive-day h4 {
-  margin: 0 0 8px 4px;
+.day-title {
+  margin: 0 0 10px 4px;
   font-weight: 800;
-  color: #E5E4E2;
+  color: var(--txt);
   letter-spacing: .2px;
 }
 
-/* butonul extern „Comandă nouă” dacă îl folosești */
+/* ===========================
+   Daily summary (card)
+   =========================== */
+.daily-summary.card {
+  margin-top: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.05));
+  border: 1px solid var(--bd-panel);
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+}
+
+.summary-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 10px;
+}
+
+.summary-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .85rem;
+  color: var(--txt);
+  background: linear-gradient(90deg, rgba(75,0,130,.32), rgba(106,13,173,.32));
+  border: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(6px);
+}
+
+/* ===========================
+   Table (summary lines)
+   =========================== */
+.table-wrap {
+  overflow: auto;
+  border-radius: 12px;
+  border: 1px solid var(--bd-panel);
+}
+
+.lines {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 520px;
+  background: rgba(255,255,255,0.04);
+}
+
+.lines thead th {
+  text-align: left;
+  font-size: .85rem;
+  letter-spacing: .2px;
+  padding: 10px 12px;
+  color: var(--txt);
+  background: linear-gradient(90deg, rgba(75,0,130,.22), rgba(106,13,173,.18));
+  position: sticky;
+  top: 0;
+}
+
+.lines tbody td {
+  padding: 10px 12px;
+  border-top: 1px solid var(--bd-panel);
+  color: var(--txt-dim);
+  font-size: .92rem;
+}
+
+.lines tbody tr:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+/* ===========================
+   Payments line
+   =========================== */
+.payments {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.muted {
+  color: var(--txt-dim);
+  opacity: .9;
+}
+
+/* ===========================
+   External button (optional)
+   =========================== */
 .new-order-btn {
   display: inline-block;
-  background: linear-gradient(90deg, #4B0082, #6a0dad);
-  color: #E5E4E2;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  color: var(--txt);
   padding: .6rem 1rem;
   border-radius: 10px;
   text-decoration: none;
@@ -173,16 +226,20 @@
 }
 .new-order-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
 
-/* responsive */
+/* ===========================
+   Responsive
+   =========================== */
 @media (max-width: 1024px) {
-  .dashboard-tabs { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
-}
-@media (max-width: 520px) {
-  .dashboard-tabs { grid-template-columns: 1fr; }
-  .orders-list { padding: 10px; }
+  .dashboard-tabs { grid-template-columns: repeat(2, minmax(160px, 1fr)); }
 }
 
-/* respectă reduced motion */
+@media (max-width: 560px) {
+  .dashboard-tabs { grid-template-columns: 1fr; }
+  .orders-list { padding: 12px; }
+  .summary-header { flex-direction: column; align-items: flex-start; }
+}
+
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }

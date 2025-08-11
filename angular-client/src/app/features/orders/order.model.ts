@@ -1,3 +1,5 @@
+export type PaymentMethods = Record<string, number>;
+
 export enum OrderStatus {
   Pending = 0,
   InProgress = 1,
@@ -44,5 +46,35 @@ export interface GroupedOrdersDto {
   active: Order[];
   completed: Order[];
   canceled: Order[];
-  archivedGrouped: { [date: string]: Order[] };
+  archivedGrouped: {
+    [date: string]: {
+      orders: Order[];
+      summary: { product: string; quantity: number; total: number }[];
+    }
+  }
 }
+
+export interface ProductSummary {
+  productName: string;
+  ordersCount: number;
+  quantity: number;
+  unitPrice?: number | null;
+  totalPaid?: number | null;
+}
+
+export interface DayTotals {
+  ordersPaid: number;
+  itemsPaid: number;
+  revenue?: number | null;
+  paymentMethods: PaymentMethods;
+}
+
+export interface ArchivedDay {
+  orders: Order[];
+  summary: ProductSummary[];
+  totals: DayTotals;
+}
+
+export type ArchivedGrouped = {
+  [date: string]: ArchivedDay;
+};
